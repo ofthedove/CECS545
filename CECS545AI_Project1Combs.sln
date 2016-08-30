@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CECS545AI_Project1Combs", "CECS545AI_Project1Combs\CECS545AI_Project1Combs.csproj", "{BA696C5A-5AF4-4D29-A9B5-11C6B5F7D341}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA696C5A-5AF4-4D29-A9B5-11C6B5F7D341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA696C5A-5AF4-4D29-A9B5-11C6B5F7D341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA696C5A-5AF4-4D29-A9B5-11C6B5F7D341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA696C5A-5AF4-4D29-A9B5-11C6B5F7D341}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
