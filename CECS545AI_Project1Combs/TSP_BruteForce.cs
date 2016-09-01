@@ -87,6 +87,9 @@ namespace CECS545AI_Project1Combs
 
             if(remainingCities.Count == 0)
             {
+                currentRouteDistance += distanceBetween(currentRoute.Last(), currentRoute.First());
+                currentRoute.Add(currentRoute.First());
+
                 bool isCurrentBest = (currentRouteDistance < bestRouteLength);
                 if(isCurrentBest)
                 {
