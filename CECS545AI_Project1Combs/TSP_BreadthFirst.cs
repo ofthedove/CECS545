@@ -18,7 +18,7 @@ using City = System.Collections.Generic.KeyValuePair<int, System.Tuple<double, d
 
 namespace CECS545AI_Project1Combs
 {
-    class TSP_BFS
+    class TSP_BreadthFirst
     {
         private List<City> inputCityList;
         private OutputLog outputLog;
@@ -44,9 +44,9 @@ namespace CECS545AI_Project1Combs
             }
         }
 
-        public TSP_BFS(string inputDataString, OutputLog outputLogParam) : this(parseInputString(inputDataString), outputLogParam) { }
+        public TSP_BreadthFirst(string inputDataString, string connectionsDataString, OutputLog outputLogParam) : this(parseInputString(inputDataString), outputLogParam) { }
 
-        public TSP_BFS(List<City> inputData, OutputLog outputLogParam)
+        public TSP_BreadthFirst(List<City> inputData, OutputLog outputLogParam)
         {
             inputCityList = inputData;
             outputLog = outputLogParam;

@@ -55,8 +55,9 @@
     <Compile Include="OutputLog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TSP_BFS.cs" />
+    <Compile Include="TSP_BreadthFirst.cs" />
     <Compile Include="TSP_BruteForce.cs" />
+    <Compile Include="TSP_DepthFirst.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

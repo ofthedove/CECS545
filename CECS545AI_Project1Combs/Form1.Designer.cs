@@ -39,6 +39,12 @@
             this.inputOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.outputSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.clearButton = new System.Windows.Forms.Button();
+            this.connectionsFileLabel = new System.Windows.Forms.Label();
+            this.connectionsFilePathTextBox = new System.Windows.Forms.TextBox();
+            this.connectionsFileBrowseButton = new System.Windows.Forms.Button();
+            this.connectionsOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.runBFSCheckBox = new System.Windows.Forms.CheckBox();
+            this.runDFSCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // inputFilePathTextBox
@@ -73,7 +79,7 @@
             // outputTextLabel
             // 
             this.outputTextLabel.AutoSize = true;
-            this.outputTextLabel.Location = new System.Drawing.Point(12, 59);
+            this.outputTextLabel.Location = new System.Drawing.Point(12, 97);
             this.outputTextLabel.Name = "outputTextLabel";
             this.outputTextLabel.Size = new System.Drawing.Size(63, 13);
             this.outputTextLabel.TabIndex = 3;
@@ -82,7 +88,7 @@
             // outputText
             // 
             this.outputText.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.outputText.Location = new System.Drawing.Point(12, 76);
+            this.outputText.Location = new System.Drawing.Point(12, 114);
             this.outputText.Multiline = true;
             this.outputText.Name = "outputText";
             this.outputText.ReadOnly = true;
@@ -93,7 +99,7 @@
             // 
             // runButton
             // 
-            this.runButton.Location = new System.Drawing.Point(12, 287);
+            this.runButton.Location = new System.Drawing.Point(12, 378);
             this.runButton.Name = "runButton";
             this.runButton.Size = new System.Drawing.Size(197, 47);
             this.runButton.TabIndex = 5;
@@ -103,7 +109,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(215, 287);
+            this.saveButton.Location = new System.Drawing.Point(215, 325);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(199, 47);
             this.saveButton.TabIndex = 6;
@@ -114,7 +120,7 @@
             // closeButton
             // 
             this.closeButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.closeButton.Location = new System.Drawing.Point(420, 287);
+            this.closeButton.Location = new System.Drawing.Point(420, 325);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(197, 47);
             this.closeButton.TabIndex = 7;
@@ -130,7 +136,7 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(12, 340);
+            this.clearButton.Location = new System.Drawing.Point(12, 325);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(197, 47);
             this.clearButton.TabIndex = 8;
@@ -138,13 +144,76 @@
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
+            // connectionsFileLabel
+            // 
+            this.connectionsFileLabel.AutoSize = true;
+            this.connectionsFileLabel.Location = new System.Drawing.Point(13, 55);
+            this.connectionsFileLabel.Name = "connectionsFileLabel";
+            this.connectionsFileLabel.Size = new System.Drawing.Size(88, 13);
+            this.connectionsFileLabel.TabIndex = 9;
+            this.connectionsFileLabel.Text = "Connections File:";
+            // 
+            // connectionsFilePathTextBox
+            // 
+            this.connectionsFilePathTextBox.AcceptsReturn = true;
+            this.connectionsFilePathTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.connectionsFilePathTextBox.Location = new System.Drawing.Point(12, 71);
+            this.connectionsFilePathTextBox.Name = "connectionsFilePathTextBox";
+            this.connectionsFilePathTextBox.Size = new System.Drawing.Size(523, 23);
+            this.connectionsFilePathTextBox.TabIndex = 10;
+            // 
+            // connectionsFileBrowseButton
+            // 
+            this.connectionsFileBrowseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.connectionsFileBrowseButton.Location = new System.Drawing.Point(541, 71);
+            this.connectionsFileBrowseButton.Name = "connectionsFileBrowseButton";
+            this.connectionsFileBrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.connectionsFileBrowseButton.TabIndex = 11;
+            this.connectionsFileBrowseButton.Text = "&Browse";
+            this.connectionsFileBrowseButton.UseVisualStyleBackColor = true;
+            this.connectionsFileBrowseButton.Click += new System.EventHandler(this.connectionsFileBrowseButton_Click);
+            // 
+            // connectionsOpenFileDialog
+            // 
+            this.connectionsOpenFileDialog.AddExtension = false;
+            this.connectionsOpenFileDialog.Filter = "All files|*.*";
+            // 
+            // runBFSCheckBox
+            // 
+            this.runBFSCheckBox.AutoSize = true;
+            this.runBFSCheckBox.Checked = true;
+            this.runBFSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.runBFSCheckBox.Location = new System.Drawing.Point(219, 383);
+            this.runBFSCheckBox.Name = "runBFSCheckBox";
+            this.runBFSCheckBox.Size = new System.Drawing.Size(122, 17);
+            this.runBFSCheckBox.TabIndex = 12;
+            this.runBFSCheckBox.Text = "Breadth First Search";
+            this.runBFSCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // runDFSCheckBox
+            // 
+            this.runDFSCheckBox.AutoSize = true;
+            this.runDFSCheckBox.Checked = true;
+            this.runDFSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.runDFSCheckBox.Location = new System.Drawing.Point(219, 406);
+            this.runDFSCheckBox.Name = "runDFSCheckBox";
+            this.runDFSCheckBox.Size = new System.Drawing.Size(114, 17);
+            this.runDFSCheckBox.TabIndex = 13;
+            this.runDFSCheckBox.Text = "Depth First Search";
+            this.runDFSCheckBox.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.runButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
-            this.ClientSize = new System.Drawing.Size(629, 399);
+            this.ClientSize = new System.Drawing.Size(629, 436);
+            this.Controls.Add(this.runDFSCheckBox);
+            this.Controls.Add(this.runBFSCheckBox);
+            this.Controls.Add(this.connectionsFileBrowseButton);
+            this.Controls.Add(this.connectionsFilePathTextBox);
+            this.Controls.Add(this.connectionsFileLabel);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.saveButton);
@@ -176,6 +245,12 @@
         private System.Windows.Forms.OpenFileDialog inputOpenFileDialog;
         private System.Windows.Forms.SaveFileDialog outputSaveFileDialog;
         private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.Label connectionsFileLabel;
+        private System.Windows.Forms.TextBox connectionsFilePathTextBox;
+        private System.Windows.Forms.Button connectionsFileBrowseButton;
+        private System.Windows.Forms.OpenFileDialog connectionsOpenFileDialog;
+        private System.Windows.Forms.CheckBox runBFSCheckBox;
+        private System.Windows.Forms.CheckBox runDFSCheckBox;
     }
 }
 
