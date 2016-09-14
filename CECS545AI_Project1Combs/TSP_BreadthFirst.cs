@@ -106,6 +106,7 @@ namespace CECS545AI_Project1Combs
                         {
                             node.distance = current.distance + distanceBetween(current.city, node.city);
                             node.parent = current.city.Key;
+                            graph[i] = node;
                             queue.Enqueue(node);
                         }
                     }
@@ -169,9 +170,12 @@ namespace CECS545AI_Project1Combs
                 int curID = Convert.ToInt32(line.Trim().Split(' ')[0].Trim());
 
                 List<int> destinationList = new List<int>();
-                foreach(string destinationID in line.Trim().Split(' ')[1].Trim().Split(','))
+                if (line.Trim().Split(' ').Count() > 1)
                 {
-                    getCityFromListByID(inputData, curID).Value.Item3.Add(new Tuple<int, double>(Convert.ToInt32(destinationID), distanceBetween(inputData, curID, Convert.ToInt32(destinationID))));
+                    foreach (string destinationID in line.Trim().Split(' ')[1].Trim().Split(','))
+                    {
+                        getCityFromListByID(inputData, curID).Value.Item3.Add(new Tuple<int, double>(Convert.ToInt32(destinationID), distanceBetween(inputData, curID, Convert.ToInt32(destinationID))));
+                    }
                 }
             }
 
