@@ -86,17 +86,17 @@ namespace CECS545AI_Project1Combs
                 graph.Add(node);
             }
 
-            Queue<Node> queue = new Queue<Node>();
+            Stack<Node> stack = new Stack<Node>();
 
             Node current;
             Node root = getNodeFromListByID(graph, 1);
             root.distance = 0;
 
-            queue.Enqueue(root);
+            stack.Push(root);
 
-            while (queue.Count > 0)
+            while (stack.Count > 0)
             {
-                current = queue.Dequeue();
+                current = stack.Pop();
                 for (int i = 0; i < graph.Count; i++)
                 {
                     Node node = graph[i];
@@ -107,7 +107,7 @@ namespace CECS545AI_Project1Combs
                             node.distance = current.distance + distanceBetween(current.city, node.city);
                             node.parent = current.city.Key;
                             graph[i] = node;
-                            queue.Enqueue(node);
+                            stack.Push(node);
                         }
                     }
                 }
