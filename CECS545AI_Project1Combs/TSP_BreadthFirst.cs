@@ -35,8 +35,6 @@ namespace CECS545AI_Project1Combs
         private List<City> bestRoute;
         private double bestRouteLength;
 
-        private int debug_curDepth = 0;
-
         public string BestRouteString
         {
             get
