@@ -41,7 +41,35 @@ namespace CECS545AI_Project1Combs
 
         public void CalculateBestRoute()
         {
+            City secondCity = graph.GetClosestCityToCity(startingCity);
+            Edge firstEdge = new Edge(startingCity, secondCity);
+            graph.AddEdge(firstEdge);
 
+            double trash;
+            City thirdCity = graph.GetClosestCityToEdge(firstEdge, out trash);
+            Edge secondEdge = new Edge(secondCity, thirdCity);
+            graph.AddEdge(secondEdge);
+            Edge thirdEdge = new Edge(thirdCity, startingCity);
+            graph.AddEdge(thirdEdge);
+
+            while(graph.NumCities > graph.NumEdges)
+            {
+                double curMinDistance = double.MaxValue;
+                Edge curEdge = null;
+                City curClosestCity = null;
+                foreach(Edge edge in graph.EdgeList)
+                {
+                    double tempDist;
+                    City tempCity = graph.GetClosestCityToEdge(edge, out tempDist);
+                    if (tempDist < curMinDistance || (tempDist == curMinDistance && tempCity.ID < curClosestCity.ID))
+                    {
+                        curMinDistance = tempDist;
+                        curClosestCity = tempCity;
+                        curEdge = edge;
+                    }
+                }
+                graph.BreakCityIntoEdge(curEdge, curClosestCity);
+            }
         }
 
         private static double calculateRouteLength(Graph graph, City firstCity)
