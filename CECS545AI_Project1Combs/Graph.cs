@@ -94,8 +94,8 @@ namespace CECS545AI_Project1Combs
         public void BreakCityIntoEdge(Edge edge, City city)
         {
             Edges.Remove(edge);
-            Edges.Add(new Edge(edge.City1, city));
-            Edges.Add(new Edge(city, edge.City2));
+            AddEdge(new Edge(edge.City1, city));
+            AddEdge(new Edge(city, edge.City2));
         }
 
         public City GetClosestCityToCity(City cityIn)
@@ -104,6 +104,10 @@ namespace CECS545AI_Project1Combs
             City curClosestCity = null;
             foreach(City city in UnusedCities)
             {
+                if(city.CompareTo(cityIn) == 0)
+                {
+                    continue;
+                }
                 Edge tempEdge = new Edge(cityIn, city);
                 if (tempEdge.Distance < curMinDistance || (tempEdge.Distance == curMinDistance && city.ID < curClosestCity.ID))
                 {
@@ -120,6 +124,10 @@ namespace CECS545AI_Project1Combs
             City curClosestCity = null;
             foreach (City city in UnusedCities)
             {
+                if(edge.City1.CompareTo(city) == 0 || edge.City2.CompareTo(city) == 0)
+                {
+                    continue;
+                }
                 double distSqr = GetEdgeCityDistanceSquared(edge, city);
                 if (distSqr < curMinDistanceSqr || (distSqr == curMinDistanceSqr && city.ID < curClosestCity.ID))
                 {
@@ -134,12 +142,17 @@ namespace CECS545AI_Project1Combs
         // From Stack Overflow stackoverflow.com/questions/849211
         public double GetEdgeCityDistanceSquared(Edge edge, City city)
         {
-            double l2 = Math.Pow(edge.Distance, 2);
-            double t = ((city.X - edge.City1.X) * (edge.City2.X - edge.City1.X) + (city.Y - edge.City1.Y) * (edge.City2.Y - edge.City1.Y)) / l2;
-            t = Math.Max(0, Math.Min(1, t));
-            double px = edge.City1.X + (t * (edge.City2.X - edge.City1.X));
-            double py = edge.City1.Y + (t * (edge.City2.Y - edge.City1.Y));
-            return Math.Pow((city.X - px), 2) + Math.Pow((city.Y - py), 2);
+            City v = edge.City1;
+            City w = edge.City2;
+            City p = city;
+            double l2 = Math.Pow((edge.Distance), 2);
+            if (l2 == 0.0) return Math.Sqrt(Math.Pow((v.X - p.X), 2) + Math.Pow((v.Y - p.Y), 2));
+            double t = Math.Max(0, Math.Min(1, ((((p.X - v.X) * (w.X - v.X)) + ((p.Y - v.Y) * (w.Y - v.Y))) / l2)));
+         
+            double projx = v.X + t * (w.X - v.X);
+            double projy = v.Y + t * (w.Y - v.Y);
+
+            return Math.Sqrt(Math.Pow((projx - p.X), 2) + Math.Pow((projy - p.Y), 2));
         }
     }
 }

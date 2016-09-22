@@ -13,8 +13,6 @@ namespace CECS545AI_Project1Combs
         Graph graph;
         City startingCity;
 
-        private double bestRouteLength;
-
         public string BestRouteString
         {
             get
@@ -44,6 +42,7 @@ namespace CECS545AI_Project1Combs
             City secondCity = graph.GetClosestCityToCity(startingCity);
             Edge firstEdge = new Edge(startingCity, secondCity);
             graph.AddEdge(firstEdge);
+            log.writeResultData("Add Edge " + startingCity.ID + " - " + secondCity.ID);
 
             double trash;
             City thirdCity = graph.GetClosestCityToEdge(firstEdge, out trash);
@@ -51,8 +50,10 @@ namespace CECS545AI_Project1Combs
             graph.AddEdge(secondEdge);
             Edge thirdEdge = new Edge(thirdCity, startingCity);
             graph.AddEdge(thirdEdge);
+            log.writeResultData("Add Edge " + secondCity.ID + " - " + thirdCity.ID);
+            log.writeResultData("Add Edge " + thirdCity.ID + " - " + startingCity.ID);
 
-            while(graph.NumCities > graph.NumEdges)
+            while (graph.NumCities > graph.NumEdges)
             {
                 double curMinDistance = double.MaxValue;
                 Edge curEdge = null;
@@ -69,6 +70,9 @@ namespace CECS545AI_Project1Combs
                     }
                 }
                 graph.BreakCityIntoEdge(curEdge, curClosestCity);
+                log.writeResultData("Remove Edge " + curEdge.City1.ID + " - " + curEdge.City2.ID);
+                log.writeResultData("Add Edge " + curEdge.City1.ID + " - " + curClosestCity.ID);
+                log.writeResultData("Add Edge " + curClosestCity.ID + " - " + curEdge.City2.ID);
             }
         }
 
