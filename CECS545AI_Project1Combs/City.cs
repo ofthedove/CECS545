@@ -1,37 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/* KeyValuePair - City
- * {
- *      int id
- *      tuple - data
- *      {
- *          double xCoord
- *          double yCoord
- *          list - connections
- *          {
- *              tuple - connection
- *              {
- *                  int id
- *                  double distance
- *              }
- *          }
- *      }
- * }
- * */
 
 namespace CECS545AI_Project1Combs
 {
-    class City
+    class City : IComparable
     {
         private int id;
         private double xCoord;
         private double yCoord;
-        private List<Edge> edges;
-        private bool locked;
 
         public int ID
         {
@@ -40,78 +15,32 @@ namespace CECS545AI_Project1Combs
                 return id;
             }
         }
-        public int X
+        public double X
         {
             get
             {
                 return xCoord;
             }
         }
-        public int Y
+        public double Y
         {
             get
             {
                 return yCoord;
             }
         }
-        public List<Edge> Edges
-        {
-            get
-            {
-                return edges;
-            }
-        }
 
         public City(int idIn, double xCoordIn, double yCoordIn)
         {
-
+            id = idIn;
+            xCoord = xCoordIn;
+            yCoord = yCoordIn;
         }
 
-        public void Lock()
+        public int CompareTo(object obj)
         {
-            locked = true;
-        }
-
-        public bool AddEdge(City city)
-        {
-            if(!locked)
-            {
-                Edge edge = new Edge();
-                return AddEdge(edge);
-            }
-            return false;
-        }
-
-        public bool AddEdge(Edge edge)
-        {
-            if (!locked)
-            {
-                edges.Add(edge);
-                return true;
-            }
-            return false;
-        }
-
-        public void SelectEdge(City city)
-        {
-            Edge edge = new Edge(this, city);
-            SelectEdge(edge);
-        }
-
-        public void SelectEdge(Edge edge)
-        {
-            
-        }
-
-        public void DeselectEdge(City city)
-        {
-            Edge edge = new Edge();
-            DeselectEdge(edge);
-        }
-
-        public void DeselectEdge(Edge edge)
-        {
-
+            City c = (City)obj;
+            return Math.Abs(c.ID.CompareTo(ID));
         }
     }
 }

@@ -82,48 +82,49 @@ namespace CECS545AI_Project1Combs
         }
 
         /// <summary>
-        /// Reads an connections input file from a given path name
-        /// Seperate from readInputFile so log messages can be more descriptive
-        /// Outs the contents of the file as a string
-        /// Returns true if successful, false otherwise
+        /// Build a graph from the input file
         /// </summary>
-        /// <param name="filepath">Full path of the file to be read</param>
-        /// <param name="inputDataText">Out - the contents of the file as a string</param>
-        /// <returns>True on success, false on failure</returns>
-        private bool readConnectionsFile(string filepath, out string connectionsDataText)
+        /// <param name="inputDataText">The entire input file as a string</param>
+        /// <returns>A graph built from the input file</returns>
+        private Graph buildGraph(string inputDataText)
         {
-            try
+            // Create the graph we'll populate and return
+            Graph graph = new Graph();
+
+            // Clean up input data
+            inputDataText = inputDataText.Substring(inputDataText.IndexOf("NODE_COORD_SECTION") + "NODE_COORD_SECTION".Length);
+            inputDataText = inputDataText.Trim();
+
+            // Build the list of cities
+            foreach (string line in inputDataText.Split('\n'))
             {
-                // Create a stream reader to read the file with
-                using (StreamReader inFileReader = new StreamReader(filepath))
+                // Split the line representing our city into individual values
+                // The data on the line looks like "cityID xCoord yCoord"
+                string[] values = line.Trim().Split(' ');
+
+                // Make sure we actually have three pieces of data. If we don't it's a bad input file, we have to quit
+                if (values.Length != 3)
                 {
-                    // Read the contents of the file into the out string
-                    connectionsDataText = inFileReader.ReadToEnd();
+                    throw new ArgumentException("Invalid input data! Line does not contain three values. Bad Line: " + line, "inputDataString");
                 }
 
-                // Success! If we haven't thrown an exception, we were successful. Return true
-                return true;
-            }
-            // Handle exceptions dealing with a bad file path
-            catch (Exception ex) when (ex is ArgumentException || ex is FileNotFoundException || ex is DirectoryNotFoundException)
-            {
-                log.writeLogMessage("Error reading connections file: file path is invalid");
-            }
-            // Handle exceptions dealing with a read error
-            catch (IOException ex)
-            {
-                log.writeLogMessage("Error reading connections file: unknown IO error: " + ex.Message);
-            }
-            // Handle exceptions dealing with a memory error, likely caused by abnormally large input file
-            catch (OutOfMemoryException)
-            {
-                log.writeLogMessage("Error reading connections file: program out of memory");
-            }
-            // All other exceptions are unexpected and should not be handled here
+                // Create a city object from the city data we got from the input line
+                City newCity;
+                try
+                {
+                    newCity = new City(Convert.ToInt32(values[0]), Convert.ToDouble(values[1]), Convert.ToDouble(values[2]));
+                }
+                // If the id isn't a number, or a coordinate isn't a double, it's a bad input file, we have to quit
+                catch (FormatException ex)
+                {
+                    throw new ArgumentException("Invalid input data! Line contains bad values. Bad Line: " + line, "inputDataString");
+                }
 
-            // Failure... Exception was thrown, we failed. Clear out string so we don't send back rubbish and return false
-            connectionsDataText = "";
-            return false;
+                graph.AddCity(newCity);
+            }
+
+            // Return the graph we created
+            return graph;
         }
 
         /// <summary>
@@ -188,66 +189,40 @@ namespace CECS545AI_Project1Combs
         private void runButton_Click(object sender, EventArgs e)
         {
             // Create strings to hold input data
-            string inputData, connectionsData;
+            string inputData;
 
             // Only run if input files can be read successfully
-            if (readInputFile(inputFilePathTextBox.Text, out inputData)
-                && readConnectionsFile(connectionsFilePathTextBox.Text, out connectionsData))
+            if (readInputFile(inputFilePathTextBox.Text, out inputData))
             {
                 try
                 {
-                    // Only run BFS algorithm if it's check box is checked
-                    if (runBFSCheckBox.Checked)
-                    {
-                        // Create a new BFS
-                        TSP_BreadthFirst tsp_bfs = new TSP_BreadthFirst(inputData, connectionsData, log);
-                        // Inform the user that the calculation is starting
-                        log.writeLogMessage("--- Begin BFS Calculation ---");
-                        // Supress log updates while the calculation is running, so they don't slow things down
-                        log.supressUpdates = true;
-                        // Start a stopwatch to time algorithm
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-                        // Perform calculation
-                        tsp_bfs.CalculateBestRoute();
-                        // Sop stopwatch
-                        stopwatch.Stop();
-                        // Stop supressing log updates
-                        log.supressUpdates = false;
-                        // Refresh display of log
-                        outputText.Text = log.readCompleteLog();
-                        // Log diagnostic information about run
-                        log.writeLogMessage("Best Route Found! Distance: " + tsp_bfs.BestRouteLengthString + "  Route: " + tsp_bfs.BestRouteString);
-                        log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
-                        log.writeLogMessage("--- BFS Calculation Complete ---");
-                    }
-                    // Only run DFS algorithm if it's check box is checked
-                    if (runDFSCheckBox.Checked)
-                    {
-                        // Create a new DFS
-                        TSP_DepthFirst tsp_dfs = new TSP_DepthFirst(inputData, connectionsData, log);
-                        log.writeLogMessage("--- Begin DFS Calculation ---");
-                        // Inform the user that the calculation is starting
-                        log.supressUpdates = true;
-                        // Supress log updates while the calculation is running, so they don't slow things down
-                        Stopwatch stopwatch = Stopwatch.StartNew();
-                        // Perform calculation
-                        tsp_dfs.CalculateBestRoute();
-                        // Sop stopwatch
-                        stopwatch.Stop();
-                        // Stop supressing log updates
-                        log.supressUpdates = false;
-                        // Refresh display of log
-                        outputText.Text = log.readCompleteLog();
-                        // Log diagnostic information about run
-                        log.writeLogMessage("Best Route Found! Distance: " + tsp_dfs.BestRouteLengthString + "  Route: " + tsp_dfs.BestRouteString);
-                        log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
-                        log.writeLogMessage("--- DFS Calculation Complete ---");
-                    }
-                    // If neither check box is checked, inform the user
-                    if (!runBFSCheckBox.Checked && !runDFSCheckBox.Checked)
-                    {
-                        log.writeLogMessage("No Search Pattern Selected! Calculation Aborted");
-                    }
+                    // Build a graph from the input file
+                    Graph graph = buildGraph(inputData);
+
+                    // Create a new search
+
+
+                    // Inform the user that the calculation is starting
+                    log.writeLogMessage("--- Begin Calculation ---");
+                    // Supress log updates while the calculation is running, so they don't slow things down
+                    log.supressUpdates = true;
+                    // Start a stopwatch to time algorithm
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+
+
+                    // Perform calculation
+
+
+                    // Sop stopwatch
+                    stopwatch.Stop();
+                    // Stop supressing log updates
+                    log.supressUpdates = false;
+                    // Refresh display of log
+                    outputText.Text = log.readCompleteLog();
+                    // Log diagnostic information about run
+                    log.writeLogMessage("Best Route Found! Distance: " + tsp_bfs.BestRouteLengthString + "  Route: " + tsp_bfs.BestRouteString);
+                    log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
+                    log.writeLogMessage("--- Calculation Complete ---");
                 }
                 // Thrown by BFS and DFS if input data strings are invalid
                 catch (ArgumentException ex)
@@ -303,23 +278,6 @@ namespace CECS545AI_Project1Combs
                 inputFilePathTextBox.Text = inputOpenFileDialog.FileName;
             }
 
-        }
-
-        /// <summary>
-        /// When browse button is pressed, open appropriate file dialog
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void connectionsFileBrowseButton_Click(object sender, EventArgs e)
-        {
-            // Open dialog
-            DialogResult connectionsFileDialogResult = connectionsOpenFileDialog.ShowDialog();
-
-            // Handle result. Populate file path text box if file was selected
-            if (connectionsFileDialogResult == DialogResult.OK)
-            {
-                connectionsFilePathTextBox.Text = connectionsOpenFileDialog.FileName;
-            }
         }
 
         /// <summary>
