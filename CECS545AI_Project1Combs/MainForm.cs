@@ -20,6 +20,8 @@ namespace CECS545AI_Project1Combs
         /// Log entries are displayed in UI and can be saved to disk
         /// </summary>
         private OutputLog log;
+
+        SolutionView solutionView;
         #endregion Private Member Variables
 
         #region Constructors
@@ -30,6 +32,8 @@ namespace CECS545AI_Project1Combs
         public MainForm()
         {
             InitializeComponent();
+
+            solutionView = new SolutionView();
 
             log = new OutputLog();
             log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
@@ -115,7 +119,7 @@ namespace CECS545AI_Project1Combs
                     newCity = new City(Convert.ToInt32(values[0]), Convert.ToDouble(values[1]), Convert.ToDouble(values[2]));
                 }
                 // If the id isn't a number, or a coordinate isn't a double, it's a bad input file, we have to quit
-                catch (FormatException ex)
+                catch (FormatException)
                 {
                     throw new ArgumentException("Invalid input data! Line contains bad values. Bad Line: " + line, "inputDataString");
                 }
@@ -199,8 +203,8 @@ namespace CECS545AI_Project1Combs
                     // Build a graph from the input file
                     Graph graph = buildGraph(inputData);
 
-                    // Create a new search
-
+                    // Create a new Closest Edge search
+                    TSP_ClosestEdge tsp_ce = new TSP_ClosestEdge(graph, log);
 
                     // Inform the user that the calculation is starting
                     log.writeLogMessage("--- Begin Calculation ---");
@@ -211,7 +215,7 @@ namespace CECS545AI_Project1Combs
 
 
                     // Perform calculation
-
+                    tsp_ce.CalculateBestRoute();
 
                     // Sop stopwatch
                     stopwatch.Stop();
@@ -220,7 +224,7 @@ namespace CECS545AI_Project1Combs
                     // Refresh display of log
                     outputText.Text = log.readCompleteLog();
                     // Log diagnostic information about run
-                    log.writeLogMessage("Best Route Found! Distance: " + tsp_bfs.BestRouteLengthString + "  Route: " + tsp_bfs.BestRouteString);
+                    log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
                     log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
                     log.writeLogMessage("--- Calculation Complete ---");
                 }
@@ -259,7 +263,7 @@ namespace CECS545AI_Project1Combs
         /// <param name="e"></param>
         private void closeButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         /// <summary>
@@ -294,6 +298,21 @@ namespace CECS545AI_Project1Combs
             // Clear the output text area
             outputText.Text = "";
         }
+
+        private void displayButton_Click(object sender, EventArgs e)
+        {
+            if (!solutionView.Visible)
+            {
+                solutionView.Show(this);
+            }
+        }
+
         #endregion Event Handlers
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            solutionView.Dispose();
+            e.Cancel = false;
+        }
     }
 }

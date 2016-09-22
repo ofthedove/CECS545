@@ -48,5 +48,27 @@ namespace CECS545AI_Project1Combs
                 return true;
             }
         }
+
+        public City GetCityByID(int id)
+        {
+            foreach(City city in Cities)
+            {
+                if(city.ID == id)
+                {
+                    return city;
+                }
+            }
+            return null;
+        }
+
+        public Edge GetEdgeByStartingCity(City city)
+        {
+            foreach(Edge edge in Edges)
+            {
+                if (edge.City1.CompareTo(city) == 0)
+                    return edge;
+            }
+            return null;
+        }
     }
 }

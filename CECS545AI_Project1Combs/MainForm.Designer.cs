@@ -40,6 +40,7 @@
             this.outputSaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.clearButton = new System.Windows.Forms.Button();
             this.connectionsOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.displayButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputFilePathTextBox
@@ -144,6 +145,16 @@
             this.connectionsOpenFileDialog.AddExtension = false;
             this.connectionsOpenFileDialog.Filter = "All files|*.*";
             // 
+            // displayButton
+            // 
+            this.displayButton.Location = new System.Drawing.Point(420, 378);
+            this.displayButton.Name = "displayButton";
+            this.displayButton.Size = new System.Drawing.Size(197, 47);
+            this.displayButton.TabIndex = 9;
+            this.displayButton.Text = "&Display Graph";
+            this.displayButton.UseVisualStyleBackColor = true;
+            this.displayButton.Click += new System.EventHandler(this.displayButton_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.runButton;
@@ -151,6 +162,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(629, 436);
+            this.Controls.Add(this.displayButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.saveButton);
@@ -164,6 +176,7 @@
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Travelling Salesperson";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,6 +196,7 @@
         private System.Windows.Forms.SaveFileDialog outputSaveFileDialog;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.OpenFileDialog connectionsOpenFileDialog;
+        private System.Windows.Forms.Button displayButton;
     }
 }
 
