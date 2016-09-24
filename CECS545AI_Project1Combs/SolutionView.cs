@@ -12,7 +12,7 @@ namespace CECS545AI_Project1Combs
 {
     public partial class SolutionView : Form
     {
-        public SolutionView()
+        public SolutionView(OutputLog log, Graph graph)
         {
             InitializeComponent();
 

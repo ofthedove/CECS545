@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CECS545AI_Project1Combs
 {
-    class Graph
+    public class Graph
     {
         private List<City> Cities;
         private List<City> UnusedCities;

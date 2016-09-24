@@ -33,7 +33,7 @@ namespace CECS545AI_Project1Combs
         {
             InitializeComponent();
 
-            solutionView = new SolutionView();
+            solutionView = new SolutionView(log, graph);
 
             log = new OutputLog();
             log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
@@ -307,12 +307,12 @@ namespace CECS545AI_Project1Combs
             }
         }
 
-        #endregion Event Handlers
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             solutionView.Dispose();
             e.Cancel = false;
         }
+
+        #endregion Event Handlers
     }
 }

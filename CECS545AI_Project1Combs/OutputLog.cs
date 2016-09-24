@@ -18,7 +18,7 @@ using LogEntry = System.Collections.Generic.KeyValuePair<int, System.Tuple<bool,
 
 namespace CECS545AI_Project1Combs
 {
-    class OutputLog
+    public class OutputLog
     {
         public delegate void UpdateHandler(object sender, EventArgs e);
         public event UpdateHandler OnLogUpdate;
