@@ -18,7 +18,7 @@ using LogEntry = System.Collections.Generic.KeyValuePair<int, System.Tuple<bool,
 
 namespace CECS545AI_Project1Combs
 {
-    public class OutputLog
+    class OutputLog
     {
         public delegate void UpdateHandler(object sender, EventArgs e);
         public event UpdateHandler OnLogUpdate;
@@ -72,6 +72,16 @@ namespace CECS545AI_Project1Combs
             foreach (LogEntry entry in log.Where(x => x.Value.Item1 == true).OrderBy(x => x.Key)) // select only data items, order by id
             {
                 result += entry.Value.Item2 + Environment.NewLine;
+            }
+            return result;
+        }
+
+        public List<string> readResultDataItems()
+        {
+            List<string> result = new List<string>();
+            foreach (LogEntry entry in log.Where(x => x.Value.Item1 == true).OrderBy(x => x.Key)) // select only data items, order by id
+            {
+                result.Add(entry.Value.Item2 + Environment.NewLine);
             }
             return result;
         }

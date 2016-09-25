@@ -33,7 +33,7 @@ namespace CECS545AI_Project1Combs
         {
             InitializeComponent();
 
-            solutionView = new SolutionView(log, graph);
+            solutionView = new SolutionView();
 
             log = new OutputLog();
             log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
@@ -171,6 +171,19 @@ namespace CECS545AI_Project1Combs
             // Failure... Exception was thrown, we failed. Return false
             return false;
         }
+
+        /// <summary>
+        /// Clears an old log and the log output text box
+        /// </summary>
+        private void clearLog()
+        {
+            // Create a new log (old log deleted automatically)
+            log = new OutputLog();
+            log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
+
+            // Clear the output text area
+            outputText.Text = "";
+        }
         #endregion Private Methods
 
         #region Event Handlers
@@ -192,6 +205,9 @@ namespace CECS545AI_Project1Combs
         /// <param name="e"></param>
         private void runButton_Click(object sender, EventArgs e)
         {
+            // Clear the log of data from previous runs
+            clearLog();
+
             // Create strings to hold input data
             string inputData;
 
@@ -227,8 +243,11 @@ namespace CECS545AI_Project1Combs
                     log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
                     log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
                     log.writeLogMessage("--- Calculation Complete ---");
+
+                    // Update solution viewer with information about this run
+                    solutionView.updateData(log, graph);
                 }
-                // Thrown by BFS and DFS if input data strings are invalid
+                // Thrown if input data strings are invalid
                 catch (ArgumentException ex)
                 {
                     log.writeLogMessage(ex.Message);
@@ -291,12 +310,7 @@ namespace CECS545AI_Project1Combs
         /// <param name="e"></param>
         private void clearButton_Click(object sender, EventArgs e)
         {
-            // Create a new log (old log deleted automatically)
-            log = new OutputLog();
-            log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
-
-            // Clear the output text area
-            outputText.Text = "";
+            clearLog();
         }
 
         private void displayButton_Click(object sender, EventArgs e)
