@@ -34,8 +34,8 @@ namespace CECS545AI_Project1Combs
             log = logIn;
             graph = graphIn;
 
+            curGraphStepIndex = graph.NumEdges - 1; // Graph is always given to us complete
             UpdateLogView();
-            curGraphStepIndex = logListBox.Items.Count - 1; // Graph is always given to us complete
             DrawGraph();
         }
 
@@ -112,8 +112,8 @@ namespace CECS545AI_Project1Combs
                 if (curStep[0] == 'A')
                 {
                     int city1ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[0].Trim());
-                    Edge edge = graph.GetEdgeByStartingCity(graph.GetCityByID(city1ID));
-                    graph.AddEdge(edge);
+                    int city2ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[1].Trim());
+                    graph.AddEdge(new Edge(graph.GetCityByID(city1ID), graph.GetCityByID(city2ID)));
                 }
                 else if (curStep[0] == 'B')
                 {
