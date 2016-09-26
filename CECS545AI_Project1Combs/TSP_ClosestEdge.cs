@@ -33,7 +33,7 @@ namespace CECS545AI_Project1Combs
         {
             log = logIn;
             graph = inputGraph;
-            startingCity = graph.GetCityByID(1);
+            startingCity = graph.GetCityByID(9);
             log.writeLogMessage("Choose starting city (arbitrary) : City 1");
         }
 

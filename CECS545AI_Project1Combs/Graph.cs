@@ -186,14 +186,16 @@ namespace CECS545AI_Project1Combs
             City curClosestCity = null;
             foreach (City city in UnusedCities)
             {
+                // I think this bit is uneeded.
                 if(edge.City1.CompareTo(city) == 0 || edge.City2.CompareTo(city) == 0)
                 {
                     continue;
                 }
-                double distSqr = GetEdgeCityDistanceSquared(edge, city);
-                if (distSqr < curMinDistanceSqr || (distSqr == curMinDistanceSqr && city.ID < curClosestCity.ID))
+                //double distSqr = GetEdgeCityDistanceSquared(edge, city);
+                double distFact = GetEdgeCityDistanceFactor(edge, city);
+                if (distFact < curMinDistanceSqr || (distFact == curMinDistanceSqr && city.ID < curClosestCity.ID))
                 {
-                    curMinDistanceSqr = distSqr;
+                    curMinDistanceSqr = distFact;
                     curClosestCity = city;
                 }
             }
@@ -215,6 +217,44 @@ namespace CECS545AI_Project1Combs
             double projy = v.Y + t * (w.Y - v.Y);
 
             return Math.Sqrt(Math.Pow((projx - p.X), 2) + Math.Pow((projy - p.Y), 2));
+        }
+
+        // Returns the agregate length between an edge and a city in meaningless but comperable units
+        // (the number doesn't mean something directly, but they'll always compare to other results correctly)
+        public double GetEdgeCityDistanceFactor(Edge edge, City city)
+        {
+            double x1 = edge.City1.X;
+            double y1 = edge.City1.Y;
+            double x2 = edge.City2.X;
+            double y2 = edge.City2.Y;
+            double xc = city.X;
+            double yc = city.Y;
+            double oneThird = 1D / 3D;
+
+            // Formula is the integration of the distance squared formula
+            //    from x1 to x2 and from y1 to y2, with respect to xc and yc
+
+            // Individual components of the X component
+            double resultX1 = oneThird * (Math.Pow(x2, 3) - Math.Pow(x1, 3));
+            double resultX2 = -1D * xc * (Math.Pow(x2, 2) - Math.Pow(x1, 2));
+            double resultX3 = Math.Pow(xc, 2);
+
+            // Combined X component
+            double resultX = resultX1 + resultX2 + resultX3;
+
+            // Individual components of the Y component
+            double resultY1 = oneThird * (Math.Pow(y2, 3) - Math.Pow(y1, 3));
+            double resultY2 = -1D * yc * (Math.Pow(y2, 2) - Math.Pow(y1, 2));
+            double resultY3 = Math.Pow(yc, 2);
+
+            // Combined Y component
+            double resultY = resultY1 + resultY2 + resultY3;
+
+            // Combine into result
+            double result = resultX + resultY;
+
+            // return
+            return result;
         }
 
         public void DrawCities(Graphics g, double width, double height, double vertOffset, int margin)
