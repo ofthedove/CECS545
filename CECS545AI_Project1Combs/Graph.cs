@@ -191,7 +191,7 @@ namespace CECS545AI_Project1Combs
                 {
                     continue;
                 }
-                //double distSqr = GetEdgeCityDistanceSquared(edge, city);
+                //double distFact = GetEdgeCityDistanceSquared(edge, city);
                 double distFact = GetEdgeCityDistanceFactor(edge, city);
                 if (distFact < curMinDistanceSqr || (distFact == curMinDistanceSqr && city.ID < curClosestCity.ID))
                 {
@@ -229,32 +229,12 @@ namespace CECS545AI_Project1Combs
             double y2 = edge.City2.Y;
             double xc = city.X;
             double yc = city.Y;
-            double oneThird = 1D / 3D;
 
-            // Formula is the integration of the distance squared formula
-            //    from x1 to x2 and from y1 to y2, with respect to xc and yc
-
-            // Individual components of the X component
-            double resultX1 = oneThird * (Math.Pow(x2, 3) - Math.Pow(x1, 3));
-            double resultX2 = -1D * xc * (Math.Pow(x2, 2) - Math.Pow(x1, 2));
-            double resultX3 = Math.Pow(xc, 2);
-
-            // Combined X component
-            double resultX = resultX1 + resultX2 + resultX3;
-
-            // Individual components of the Y component
-            double resultY1 = oneThird * (Math.Pow(y2, 3) - Math.Pow(y1, 3));
-            double resultY2 = -1D * yc * (Math.Pow(y2, 2) - Math.Pow(y1, 2));
-            double resultY3 = Math.Pow(yc, 2);
-
-            // Combined Y component
-            double resultY = resultY1 + resultY2 + resultY3;
-
-            // Combine into result
-            double result = resultX + resultY;
+            double component1 = (Math.Abs(x1 - x2) * Math.Abs(Math.Min(y1, y2) - yc)) / Math.Abs(x1 - x2);
+            double component2 = (Math.Abs(y1 - y2) * Math.Abs(Math.Max(x1, x2) - xc)) / Math.Abs(y1 - y2);
 
             // return
-            return result;
+            return component1 + component2;
         }
 
         public void DrawCities(Graphics g, double width, double height, double vertOffset, int margin)
