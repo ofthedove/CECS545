@@ -42,7 +42,7 @@ namespace CECS545AI_Project1Combs
             City secondCity = graph.GetClosestCityToCity(startingCity);
             Edge firstEdge = new Edge(startingCity, secondCity);
             graph.AddEdge(firstEdge);
-            log.writeResultData("Add Edge " + startingCity.ID.ToString().PadLeft(2) + " - " + secondCity.ID.ToString().PadLeft(2));
+            log.writeResultData("Add Edge " + startingCity.ID.ToString().PadLeft(2) + " - " + secondCity.ID.ToString().PadLeft(2) + "  Dist " + firstEdge.Distance.ToString("0.00"));
 
             double trash;
             City thirdCity = graph.GetClosestCityToEdge(firstEdge, out trash);
@@ -50,8 +50,8 @@ namespace CECS545AI_Project1Combs
             graph.AddEdge(secondEdge);
             Edge thirdEdge = new Edge(thirdCity, startingCity);
             graph.AddEdge(thirdEdge);
-            log.writeResultData("Add Edge " + secondCity.ID.ToString().PadLeft(2) + " - " + thirdCity.ID.ToString().PadLeft(2));
-            log.writeResultData("Add Edge " + thirdCity.ID.ToString().PadLeft(2) + " - " + startingCity.ID.ToString().PadLeft(2));
+            log.writeResultData("Add Edge " + secondCity.ID.ToString().PadLeft(2) + " - " + thirdCity.ID.ToString().PadLeft(2) + "  Dist " + (firstEdge.Distance + secondEdge.Distance).ToString("0.00"));
+            log.writeResultData("Add Edge " + thirdCity.ID.ToString().PadLeft(2) + " - " + startingCity.ID.ToString().PadLeft(2) + "  Dist " + calculateRouteLength(graph, startingCity).ToString("0.00"));
 
             while (graph.NumCities > graph.NumEdges)
             {
@@ -70,7 +70,7 @@ namespace CECS545AI_Project1Combs
                     }
                 }
                 graph.BreakCityIntoEdge(curEdge, curClosestCity);
-                log.writeResultData("Break City " + curClosestCity.ID.ToString().PadLeft(2) + " into Edge " + curEdge.City1.ID.ToString().PadLeft(2) + " - " + curEdge.City2.ID.ToString().PadLeft(2));
+                log.writeResultData("Break City " + curClosestCity.ID.ToString().PadLeft(2) + " into Edge " + curEdge.City1.ID.ToString().PadLeft(2) + " - " + curEdge.City2.ID.ToString().PadLeft(2) + "  Dist " + calculateRouteLength(graph, startingCity).ToString("0.00"));
             }
         }
 

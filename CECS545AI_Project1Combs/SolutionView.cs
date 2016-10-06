@@ -63,9 +63,9 @@ namespace CECS545AI_Project1Combs
                 // Draw text header
                 Rectangle headerRect = new Rectangle(0, 5, bmp.Width, 30);
                 g.DrawString(logListBox.Items[selectedStepIndex].ToString(), f, b, headerRect, sf);
-                headerRect.Y += 15;
-                headerRect.Height -= 15;
-                g.DrawString("Total Distance : " + 10, f, b, headerRect, sf);
+                //headerRect.Y += 15;
+                //headerRect.Height -= 15;
+                //g.DrawString("Total Distance : " + curGraphTotalDistance, f, b, headerRect, sf);
 
                 // Draw Edges
                 graph.DrawEdges(g, bmp.Width, bmp.Height, (headerRect.Y + headerRect.Height), 10);
@@ -89,14 +89,14 @@ namespace CECS545AI_Project1Combs
 
                 if (curStep[0] == 'A')
                 {
-                    int city1ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[0].Trim());
+                    int city1ID = logEntryGetCity1ID(curStep);
                     Edge edge = graph.GetEdgeByStartingCity(graph.GetCityByID(city1ID));
                     graph.RemoveEdge(edge);
                 }
                 else if (curStep[0] == 'B')
                 {
-                    int city1ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[0].Trim());
-                    int newcityID = Convert.ToInt32(curStep.Substring(10, 4).Trim());
+                    int city1ID = logEntryGetCity1ID(curStep);
+                    int newcityID = logEntryGetInsertedCityID(curStep);
                     Edge edge1 = graph.GetEdgeByStartingCity(graph.GetCityByID(city1ID));
                     Edge edge2 = graph.GetEdgeByStartingCity(graph.GetCityByID(newcityID));
                     graph.RemoveCityFromEdges(edge1, edge2);
@@ -111,14 +111,14 @@ namespace CECS545AI_Project1Combs
 
                 if (curStep[0] == 'A')
                 {
-                    int city1ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[0].Trim());
-                    int city2ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[1].Trim());
+                    int city1ID = logEntryGetCity1ID(curStep);
+                    int city2ID = logEntryGetCity2ID(curStep);
                     graph.AddEdge(new Edge(graph.GetCityByID(city1ID), graph.GetCityByID(city2ID)));
                 }
                 else if (curStep[0] == 'B')
                 {
-                    int city1ID = Convert.ToInt32(curStep.Substring(curStep.Length - 7).Split('-')[0].Trim());
-                    int newcityID = Convert.ToInt32(curStep.Substring(10, 4).Trim());
+                    int city1ID = logEntryGetCity1ID(curStep);
+                    int newcityID = logEntryGetInsertedCityID(curStep);
                     Edge edge = graph.GetEdgeByStartingCity(graph.GetCityByID(city1ID));
                     City city = graph.GetCityByID(newcityID);
                     graph.BreakCityIntoEdge(edge, city);
@@ -179,6 +179,22 @@ namespace CECS545AI_Project1Combs
         {
             selectedStepIndex = logListBox.SelectedIndex;
             DrawGraph();
+        }
+
+        private static int logEntryGetCity1ID(string logEntry)
+        {
+            string textAndFirstID = logEntry.Split('-')[0];
+            return Convert.ToInt32(textAndFirstID.Substring(textAndFirstID.Length - 3));
+        }
+
+        private static int logEntryGetCity2ID(string logEntry)
+        {
+            return Convert.ToInt32(logEntry.Split('-')[1].Substring(0,3));
+        }
+
+        private static int logEntryGetInsertedCityID(string logEntry)
+        {
+            return Convert.ToInt32(logEntry.Substring(10, 4).Trim());
         }
     }
 }
