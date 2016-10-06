@@ -223,18 +223,38 @@ namespace CECS545AI_Project1Combs
         // (the number doesn't mean something directly, but they'll always compare to other results correctly)
         public double GetEdgeCityDistanceFactor(Edge edge, City city)
         {
-            double x1 = edge.City1.X;
-            double y1 = edge.City1.Y;
-            double x2 = edge.City2.X;
-            double y2 = edge.City2.Y;
-            double xc = city.X;
-            double yc = city.Y;
+            City v = edge.City1;
+            City w = edge.City2;
+            City p = city;
 
-            double component1 = (Math.Abs(x1 - x2) * Math.Abs(Math.Min(y1, y2) - yc)) / Math.Abs(x1 - x2);
-            double component2 = (Math.Abs(y1 - y2) * Math.Abs(Math.Max(x1, x2) - xc)) / Math.Abs(y1 - y2);
+            // The length of VW, squared
+            double l2 = Math.Pow((edge.Distance), 2);
 
-            // return
-            return component1 + component2;
+            // If VW is zero length, there's a problem. Make sure someone finds out
+            if (l2 == 0.0) throw new ArgumentException("Edges must not be of zero length!");
+
+            // Find the magnitude of the projection of P onto VW
+            double magProjPonVW = ( ((p.X - v.X) * (w.X - v.X)) + ((p.Y - v.Y) * (w.Y - v.Y)) ) / l2;
+
+            // Cap that so it doesn't go past V or W
+            double t = Math.Max(0, Math.Min(1, magProjPonVW));
+
+            // Find the x and y components of the capped projection of P onto W
+            double projx = v.X + t * (w.X - v.X);
+            double projy = v.Y + t * (w.Y - v.Y);
+
+            // Find the distance between P and the point described by the vector found in the last step
+            double distNearestPoint = Math.Pow((projx - p.X), 2) + Math.Pow((projy - p.Y), 2);
+
+            // Find the length of the uncapped projection. Angle factor should be zero if proj P on VW is inside VW
+            double angleFactor = 0;
+            if (magProjPonVW < 0 || 1 < magProjPonVW)
+            {
+                angleFactor = Math.Abs(l2 * magProjPonVW);
+            }
+
+            // Return the distance plus the angle factor
+            return distNearestPoint + angleFactor;
         }
 
         public void DrawCities(Graphics g, double width, double height, double vertOffset, int margin)
