@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="City.cs" />
     <Compile Include="Edge.cs" />
+    <Compile Include="Gene.cs" />
+    <Compile Include="Individual.cs" />
+    <Compile Include="Population.cs" />
     <Compile Include="SolutionView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,6 +67,7 @@
     <Compile Include="OutputLog.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Strand.cs" />
     <Compile Include="TSP_BreadthFirst.cs" />
     <Compile Include="TSP_BruteForce.cs" />
     <Compile Include="TSP_ClosestEdge.cs" />
