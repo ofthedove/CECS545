@@ -22,6 +22,7 @@ namespace CECS545AI_Project1Combs
         private OutputLog log;
 
         SolutionView solutionView;
+        SettingsView settingsView;
         #endregion Private Member Variables
 
         #region Constructors
@@ -34,6 +35,7 @@ namespace CECS545AI_Project1Combs
             InitializeComponent();
 
             solutionView = new SolutionView();
+            settingsView = new SettingsView();
 
             log = new OutputLog();
             log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
@@ -286,24 +288,6 @@ namespace CECS545AI_Project1Combs
         }
 
         /// <summary>
-        /// When browse button is pressed, open appropriate file dialog
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void inputFileBrowseButton_Click(object sender, EventArgs e)
-        {
-            // Open dialog
-            DialogResult inputFileDialogResult = inputOpenFileDialog.ShowDialog();
-
-            // Handle result. Populate file path text box if file was selected
-            if (inputFileDialogResult == DialogResult.OK)
-            {
-                inputFilePathTextBox.Text = inputOpenFileDialog.FileName;
-            }
-
-        }
-
-        /// <summary>
         /// When the clear button is pressed, clear the log
         /// </summary>
         /// <param name="sender"></param>
@@ -321,9 +305,25 @@ namespace CECS545AI_Project1Combs
             }
         }
 
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            if(settingsView.IsDisposed)
+            {
+                settingsView = new SettingsView();
+            }
+
+            settingsView.Show();
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             solutionView.Dispose();
+
+            if (!settingsView.IsDisposed)
+            {
+                settingsView.Dispose();
+            }
+
             e.Cancel = false;
         }
 

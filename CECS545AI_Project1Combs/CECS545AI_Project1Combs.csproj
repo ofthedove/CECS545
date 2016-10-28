@@ -51,6 +51,13 @@
     <Compile Include="Gene.cs" />
     <Compile Include="Individual.cs" />
     <Compile Include="Population.cs" />
+    <Compile Include="SettingsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsView.Designer.cs">
+      <DependentUpon>SettingsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Solution.cs" />
     <Compile Include="SolutionView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +91,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="SettingsView.resx">
+      <DependentUpon>SettingsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SolutionView.resx">
       <DependentUpon>SolutionView.cs</DependentUpon>
     </EmbeddedResource>

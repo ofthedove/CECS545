@@ -36,7 +36,7 @@ namespace CECS545AI_Project1Combs
         public Strand(int lengthIn)
         {
             length = lengthIn;
-            genes = new int[length];
+            genes = new Gene[length];
         }
 
         /// <summary>
