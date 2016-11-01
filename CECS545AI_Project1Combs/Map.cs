@@ -44,5 +44,15 @@ namespace CECS545AI_Project1Combs
             }
             return null;
         }
+
+        public Graph CreateGraph()
+        {
+            Graph graph = new Graph();
+            foreach(City city in Cities)
+            {
+                graph.AddCity(city);
+            }
+            return graph;
+        }
     }
 }

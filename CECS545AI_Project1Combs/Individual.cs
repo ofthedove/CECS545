@@ -6,28 +6,111 @@ using System.Threading.Tasks;
 
 namespace CECS545AI_Project1Combs
 {
-    class Individual
+    abstract class Individual
     {
-        private Strand AStrand;
-        private Strand BStrand;
-        private Strand expressedStrand;
+        protected Strand strandA;
+
+        protected static Random rand = new Random();
+
+        //private Strand expressedStrand;
         //private Solution solution;
         //private int fitness; = solution.length
-        private Individual mate;
-        private int age;
+        //private Individual mate;
+        //private int age;
 
-        public Individual(Strand strandA, Strand strandB)
+        protected virtual Strand SolutionStrand()
         {
-            AStrand = strandA;
-            BStrand = strandB;
-            expressedStrand = Express(AStrand, BStrand);
-            age = 0;
+            return strandA;
         }
 
-        private static Strand Express(Strand strandA, Strand strandB)
+        public virtual Strand MatingStrand()
         {
-            // Use the dominant/recessive traits of the genes to determine which genes are expressed
+            return strandA;
+        }
+
+        public virtual Strand NewMatingStrand()
+        {
+            return MatingStrand();
+        }
+    }
+
+    abstract class DoubleStrandIndividual : Individual
+    {
+        protected Strand strandB;
+        protected Strand matingStrand = null;
+        protected Strand solutionStrand = null;
+
+        protected override Strand SolutionStrand()
+        {
+            return strandA;
+        }
+
+        public override Strand MatingStrand()
+        {
+            if (matingStrand == null)
+            {
+                matingStrand = NewMatingStrand();
+            }
+
+            return matingStrand;
+        }
+
+        public virtual Strand NewMatingStrand()
+        {
+            strandA.Sort();
+            strandB.Sort();
+            matingStrand = new Strand(strandA.Length);
+            for (int i = 0; i < matingStrand.Length; i++)
+            {
+                bool selector = rand.Next(0, 1) == 1;
+                matingStrand[i] = selector ? strandA[i] : strandB[i];
+            }
+            matingStrand.Lock();
+            return matingStrand;
+        }
+    }
+
+    class DoubleCityStrandIndividual : DoubleStrandIndividual
+    {
+        public DoubleCityStrandIndividual(Strand strandAIn, Strand strandBIn)
+        {
+            strandA = strandAIn;
+            strandB = strandBIn;
+        }
+
+        protected override Strand SolutionStrand()
+        {
             throw new NotImplementedException();
+        }
+    }
+
+    class DoublePositionStrandIndividual : DoubleStrandIndividual
+    {
+        public DoublePositionStrandIndividual(Strand strandAIn, Strand strandBIn)
+        {
+            strandA = strandAIn;
+            strandB = strandBIn;
+        }
+
+        protected override Strand SolutionStrand()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class SingleCityStrandIndividual : Individual
+    {
+        public SingleCityStrandIndividual(Strand strandAIn)
+        {
+            strandA = strandAIn;
+        }
+    }
+
+    class SinglePositionStrandIndividual : Individual
+    {
+        public SinglePositionStrandIndividual(Strand strandAIn)
+        {
+            strandA = strandAIn;
         }
     }
 }

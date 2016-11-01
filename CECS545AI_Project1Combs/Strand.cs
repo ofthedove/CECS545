@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CECS545AI_Project1Combs
 {
-    class Strand
+    class Strand : IEnumerable
     {
         private int length;
         private Gene[] genes;
@@ -54,6 +55,21 @@ namespace CECS545AI_Project1Combs
             {
                 throw new ApplicationException("Cannot lock already locked Strand!");
             }
+        }
+
+        public void Sort()
+        {
+            Array.Sort(genes);
+        }
+
+        public void Sort(IComparer comparer)
+        {
+            Array.Sort(genes, comparer);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return genes.GetEnumerator();
         }
     }
 }

@@ -222,7 +222,7 @@ namespace CECS545AI_Project1Combs
                     Graph graph = buildGraph(inputData);
 
                     // Create a new Closest Edge search
-                    TSP_ClosestEdge tsp_ce = new TSP_ClosestEdge(graph, log);
+                    //TSP_ClosestEdge tsp_ce = new TSP_ClosestEdge(graph, log);
 
                     // Inform the user that the calculation is starting
                     log.writeLogMessage("--- Begin Calculation ---");
@@ -233,7 +233,7 @@ namespace CECS545AI_Project1Combs
 
 
                     // Perform calculation
-                    tsp_ce.CalculateBestRoute();
+                    //tsp_ce.CalculateBestRoute();
 
                     // Sop stopwatch
                     stopwatch.Stop();
@@ -242,7 +242,7 @@ namespace CECS545AI_Project1Combs
                     // Refresh display of log
                     outputText.Text = log.readCompleteLog();
                     // Log diagnostic information about run
-                    log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
+                    //log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
                     log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
                     log.writeLogMessage("--- Calculation Complete ---");
 
