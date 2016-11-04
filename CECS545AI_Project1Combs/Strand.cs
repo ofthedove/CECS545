@@ -40,6 +40,21 @@ namespace CECS545AI_Project1Combs
             genes = new Gene[length];
         }
 
+        public static Strand GenerateRandomStrand(int lengthIn, int maxVal, Random rand)
+        {
+            Strand strand = new Strand(lengthIn);
+
+            // Iterate from length-1 to 0 to fill in indicies
+            for(int i = lengthIn - 1; i >= 0; i--)
+            {
+                strand[i] = new Gene(rand.Next(0, maxVal), i);
+            }
+
+            strand.Lock();
+
+            return strand;
+        }
+
         /// <summary>
         /// Lock this strand so that it may no longer be altered, only accessed
         /// This action should be taken as soon as the strand is in it's final state

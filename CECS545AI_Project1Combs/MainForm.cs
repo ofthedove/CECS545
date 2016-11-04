@@ -231,9 +231,12 @@ namespace CECS545AI_Project1Combs
                     // Start a stopwatch to time algorithm
                     Stopwatch stopwatch = Stopwatch.StartNew();
 
+                    // Should give log an instance of stopwatch so it can timestamp events
 
                     // Perform calculation
                     //tsp_ce.CalculateBestRoute();
+
+                    // Should take away stopwatch from log so it doesn't try to use it after it's stopped
 
                     // Sop stopwatch
                     stopwatch.Stop();
