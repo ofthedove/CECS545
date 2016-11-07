@@ -52,6 +52,7 @@
     <Compile Include="Individual.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Population.cs" />
+    <Compile Include="PopulationProperties.cs" />
     <Compile Include="SettingsView.cs">
       <SubType>Form</SubType>
     </Compile>
