@@ -94,8 +94,20 @@ namespace CECS545AI_Project1Combs
         /// <returns>A graph built from the input file</returns>
         private Graph buildGraph(string inputDataText)
         {
+            Map map = buildMap(inputDataText);
+            Graph graph = map.CreateGraph();
+            return graph;
+        }
+
+        /// <summary>
+        /// Build a map from the input file
+        /// </summary>
+        /// <param name="inputDataText">The entire input file as a string</param>
+        /// <returns>A map built from the input file</returns>
+        private Map buildMap(string inputDataText)
+        {
             // Create the graph we'll populate and return
-            Graph graph = new Graph();
+            Map map = new Map();
 
             // Clean up input data
             inputDataText = inputDataText.Substring(inputDataText.IndexOf("NODE_COORD_SECTION") + "NODE_COORD_SECTION".Length);
@@ -126,11 +138,11 @@ namespace CECS545AI_Project1Combs
                     throw new ArgumentException("Invalid input data! Line contains bad values. Bad Line: " + line, "inputDataString");
                 }
 
-                graph.AddCity(newCity);
+                map.AddCity(newCity);
             }
 
-            // Return the graph we created
-            return graph;
+            // Return the map we created
+            return map;
         }
 
         /// <summary>
@@ -221,8 +233,12 @@ namespace CECS545AI_Project1Combs
                     // Build a graph from the input file
                     Graph graph = buildGraph(inputData);
 
-                    // Create a new Closest Edge search
-                    //TSP_ClosestEdge tsp_ce = new TSP_ClosestEdge(graph, log);
+                    // Build a popInfo object from the settings file
+                    /// TODO : set up the population properties constructor to accept an input file
+                    PopulationProperties popInfo = new PopulationProperties();
+
+                    // Create a new GA
+                    Population population = new Population(popInfo);
 
                     // Inform the user that the calculation is starting
                     log.writeLogMessage("--- Begin Calculation ---");

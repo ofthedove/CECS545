@@ -49,6 +49,22 @@ namespace CECS545AI_Project1Combs
                 return (int)(fitnessSum / (ulong)members.Count);
             }
         }
+
+        public double StdDevFitness
+        {
+            get
+            {
+                ulong runningSum = 0;
+                int averageFitness = AverageFitness;
+                foreach(Individual indv in members)
+                {
+                    runningSum += (ulong)Math.Pow(indv.Fitness - averageFitness, 2);
+                }
+                double variance = runningSum / (ulong)members.Count;
+                double stdDev = Math.Sqrt(variance);
+                return stdDev;
+            }
+        }
         #endregion General Population Information
 
         public Population(PopulationProperties popInfoIn)

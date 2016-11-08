@@ -45,5 +45,15 @@ namespace CECS545AI_Project1Combs
                 }
             }
         }
+        
+        /// TODO : set up the population properties constructor to accept an input file
+        public PopulationProperties()
+        {
+            // Need actual values to populate with!
+            map = new Map();
+            geneStrandType = GeneStrandType.OrderAsValue;
+            individualsAreDoubleStrand = true;
+            // TODO make max gene value variable?
+        }
     }
 }
