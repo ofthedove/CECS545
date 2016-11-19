@@ -39,7 +39,7 @@ namespace CECS545AI_Project1Combs
 
         public int CompareTo(object obj)
         {
-            City c = (City)obj;
+            City c = obj as City;
             return Math.Abs(c.ID.CompareTo(ID));
         }
     }

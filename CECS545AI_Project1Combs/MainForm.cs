@@ -22,6 +22,7 @@ namespace CECS545AI_Project1Combs
         private OutputLog log;
 
         SolutionView solutionView;
+        SettingsView settingsView;
         #endregion Private Member Variables
 
         #region Constructors
@@ -34,6 +35,7 @@ namespace CECS545AI_Project1Combs
             InitializeComponent();
 
             solutionView = new SolutionView();
+            settingsView = new SettingsView();
 
             log = new OutputLog();
             log.OnLogUpdate += new OutputLog.UpdateHandler(OutputLog_Update);
@@ -92,8 +94,20 @@ namespace CECS545AI_Project1Combs
         /// <returns>A graph built from the input file</returns>
         private Graph buildGraph(string inputDataText)
         {
+            Map map = buildMap(inputDataText);
+            Graph graph = map.CreateGraph();
+            return graph;
+        }
+
+        /// <summary>
+        /// Build a map from the input file
+        /// </summary>
+        /// <param name="inputDataText">The entire input file as a string</param>
+        /// <returns>A map built from the input file</returns>
+        private Map buildMap(string inputDataText)
+        {
             // Create the graph we'll populate and return
-            Graph graph = new Graph();
+            Map map = new Map();
 
             // Clean up input data
             inputDataText = inputDataText.Substring(inputDataText.IndexOf("NODE_COORD_SECTION") + "NODE_COORD_SECTION".Length);
@@ -124,11 +138,11 @@ namespace CECS545AI_Project1Combs
                     throw new ArgumentException("Invalid input data! Line contains bad values. Bad Line: " + line, "inputDataString");
                 }
 
-                graph.AddCity(newCity);
+                map.AddCity(newCity);
             }
 
-            // Return the graph we created
-            return graph;
+            // Return the map we created
+            return map;
         }
 
         /// <summary>
@@ -219,8 +233,12 @@ namespace CECS545AI_Project1Combs
                     // Build a graph from the input file
                     Graph graph = buildGraph(inputData);
 
-                    // Create a new Closest Edge search
-                    TSP_ClosestEdge tsp_ce = new TSP_ClosestEdge(graph, log);
+                    // Build a popInfo object from the settings file
+                    /// TODO : set up the population properties constructor to accept an input file
+                    PopulationProperties popInfo = new PopulationProperties();
+
+                    // Create a new GA
+                    Population population = new Population(popInfo);
 
                     // Inform the user that the calculation is starting
                     log.writeLogMessage("--- Begin Calculation ---");
@@ -229,9 +247,12 @@ namespace CECS545AI_Project1Combs
                     // Start a stopwatch to time algorithm
                     Stopwatch stopwatch = Stopwatch.StartNew();
 
+                    // Should give log an instance of stopwatch so it can timestamp events
 
                     // Perform calculation
-                    tsp_ce.CalculateBestRoute();
+                    //tsp_ce.CalculateBestRoute();
+
+                    // Should take away stopwatch from log so it doesn't try to use it after it's stopped
 
                     // Sop stopwatch
                     stopwatch.Stop();
@@ -240,7 +261,7 @@ namespace CECS545AI_Project1Combs
                     // Refresh display of log
                     outputText.Text = log.readCompleteLog();
                     // Log diagnostic information about run
-                    log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
+                    //log.writeLogMessage("Best Route Found! Distance: " + tsp_ce.BestRouteLengthString + "  Route: " + tsp_ce.BestRouteString);
                     log.writeLogMessage("Calculation required " + (stopwatch.ElapsedMilliseconds / 1000.00).ToString() + " s");
                     log.writeLogMessage("--- Calculation Complete ---");
 
@@ -286,24 +307,6 @@ namespace CECS545AI_Project1Combs
         }
 
         /// <summary>
-        /// When browse button is pressed, open appropriate file dialog
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void inputFileBrowseButton_Click(object sender, EventArgs e)
-        {
-            // Open dialog
-            DialogResult inputFileDialogResult = inputOpenFileDialog.ShowDialog();
-
-            // Handle result. Populate file path text box if file was selected
-            if (inputFileDialogResult == DialogResult.OK)
-            {
-                inputFilePathTextBox.Text = inputOpenFileDialog.FileName;
-            }
-
-        }
-
-        /// <summary>
         /// When the clear button is pressed, clear the log
         /// </summary>
         /// <param name="sender"></param>
@@ -321,9 +324,25 @@ namespace CECS545AI_Project1Combs
             }
         }
 
+        private void settingsButton_Click(object sender, EventArgs e)
+        {
+            if(settingsView.IsDisposed)
+            {
+                settingsView = new SettingsView();
+            }
+
+            settingsView.Show();
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             solutionView.Dispose();
+
+            if (!settingsView.IsDisposed)
+            {
+                settingsView.Dispose();
+            }
+
             e.Cancel = false;
         }
 

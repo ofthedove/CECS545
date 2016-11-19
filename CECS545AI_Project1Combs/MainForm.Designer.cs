@@ -41,6 +41,7 @@
             this.clearButton = new System.Windows.Forms.Button();
             this.connectionsOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.displayButton = new System.Windows.Forms.Button();
+            this.settingsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // inputFilePathTextBox
@@ -61,7 +62,7 @@
             this.inputFileBrowseButton.TabIndex = 1;
             this.inputFileBrowseButton.Text = "&Browse";
             this.inputFileBrowseButton.UseVisualStyleBackColor = true;
-            this.inputFileBrowseButton.Click += new System.EventHandler(this.inputFileBrowseButton_Click);
+            this.inputFileBrowseButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // inputFileLabel
             // 
@@ -155,6 +156,16 @@
             this.displayButton.UseVisualStyleBackColor = true;
             this.displayButton.Click += new System.EventHandler(this.displayButton_Click);
             // 
+            // settingsButton
+            // 
+            this.settingsButton.Location = new System.Drawing.Point(215, 378);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(199, 47);
+            this.settingsButton.TabIndex = 10;
+            this.settingsButton.Text = "Settings";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            this.settingsButton.Click += new System.EventHandler(this.settingsButton_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.runButton;
@@ -162,6 +173,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.closeButton;
             this.ClientSize = new System.Drawing.Size(629, 436);
+            this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.displayButton);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.closeButton);
@@ -197,6 +209,7 @@
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.OpenFileDialog connectionsOpenFileDialog;
         private System.Windows.Forms.Button displayButton;
+        private System.Windows.Forms.Button settingsButton;
     }
 }
 
