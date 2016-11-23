@@ -21,14 +21,12 @@
         <TabControl x:Name="tabControl" Margin="10" Grid.ColumnSpan="3" Grid.Row="1">
             <TabItem x:Name="BestIndvTab" Header="Best Fit">
                 <Grid Background="#FFE5E5E5">
-                    <Image x:Name="BestFitImage" HorizontalAlignment="Left" Margin="10,10,0,35" Width="260"/>
-                    <Slider x:Name="BestFitSlider" Margin="10,0,10,10" RenderTransformOrigin="0.374,2.32" Height="20" VerticalAlignment="Bottom" ValueChanged="BestFitSlider_ValueChanged"/>
+                    <Image x:Name="BestFitImage" Margin="10"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="LeastIndvTab" Header="Least Fit">
                 <Grid Background="#FFE5E5E5">
-                    <Image x:Name="LeastFitImage" HorizontalAlignment="Left" Margin="10,10,0,35" Width="260"/>
-                    <Slider x:Name="LeastFitSlider" Margin="10,0,10,10" RenderTransformOrigin="0.374,2.32" Height="20" VerticalAlignment="Bottom" ValueChanged="LeastFitSlider_ValueChanged"/>
+                    <Image x:Name="LeastFitImage" Margin="10"/>
                 </Grid>
             </TabItem>
         </TabControl>
