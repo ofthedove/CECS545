@@ -23,8 +23,7 @@ namespace cecs545FinalProject
     public partial class ResultNavigator : Window
     {
         private Log log;
-
-        private List<Bitmap> wocImgList;
+        
         private List<Bitmap> bstImgList;
         private List<Bitmap> lstImgList;
 
@@ -55,53 +54,32 @@ namespace cecs545FinalProject
 
                 // Update the general info section
                 generationValueLabel.Content = selectedGen.GenNum;
-                wocFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.WocFitness);
                 maxFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.MaxFitness);
                 minFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.MinFitness);
+                avgFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.AvgFitness);
+                stdDevValueLabel.Content = String.Format("{0:0.000}", selectedGen.StdDevFit);
 
                 // ---- Update the board viewer ----
                 // Clear the image viewers
-                WoCSlnImage.Source = null;
                 BestFitImage.Source = null;
                 LeastFitImage.Source = null;
 
                 // Generate the images
-                wocImgList = ClickOMania.GenerateImageList(selectedGen.WocSlnSolution, log.OriginalBoard.GetBoardAsArray());
-                bstImgList = ClickOMania.GenerateImageList(selectedGen.MostFitSolution, log.OriginalBoard.GetBoardAsArray());
-                lstImgList = ClickOMania.GenerateImageList(selectedGen.LeastFitSolution, log.OriginalBoard.GetBoardAsArray());
+                //bstImgList = ClickOMania.GenerateImageList(selectedGen.MostFitSolution, log.OriginalBoard.GetBoardAsArray());
+                //lstImgList = ClickOMania.GenerateImageList(selectedGen.LeastFitSolution, log.OriginalBoard.GetBoardAsArray());
 
                 // Reset the sliders to 0
-                WoCSlnSlider.Value = 0;
                 BestFitSlider.Value = 0;
                 LeastFitSlider.Value = 0;
 
                 // Update the slider max values
-                WoCSlnSlider.Maximum = wocImgList.Count - 1;
                 BestFitSlider.Maximum = bstImgList.Count - 1;
                 LeastFitSlider.Maximum = lstImgList.Count - 1;
 
                 // Set all sliders to their max value
-                WoCSlnSlider.Value = WoCSlnSlider.Maximum;
                 BestFitSlider.Value = BestFitSlider.Maximum;
                 LeastFitSlider.Value = LeastFitSlider.Maximum;
             }
-        }
-
-        private void WoCSlnSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            var slider = sender as Slider;
-            int value = (int)slider.Value;
-            BitmapImage bitmapImage = new BitmapImage();
-            using (MemoryStream memory = new MemoryStream())
-            {
-                wocImgList[value].Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-            }
-            WoCSlnImage.Source = bitmapImage;
         }
 
         private void BestFitSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
