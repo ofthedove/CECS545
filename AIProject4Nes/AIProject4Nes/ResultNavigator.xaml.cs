@@ -15,7 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace cecs545FinalProject
+namespace AIProject4Nes
 {
     /// <summary>
     /// Interaction logic for ResultNavigator.xaml

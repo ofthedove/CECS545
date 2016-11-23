@@ -24,5 +24,15 @@ namespace AIProject4Nes
         {
             InitializeComponent();
         }
+
+        private void fileInputBrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void startButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

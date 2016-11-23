@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AIProject4Nes
 {
-    class City : IComparable
+    public class City : IComparable
     {
         private int id;
         private double xCoord;
