@@ -62,8 +62,8 @@ namespace AIProject4Nes
                 LeastFitImage.Source = null;
 
                 // Generate the images
-                Bitmap bstImg = null;//bstImgList = ClickOMania.GenerateImageList(selectedGen.MostFitSolution, log.OriginalBoard.GetBoardAsArray());
-                Bitmap lstImg = null;//lstImgList = ClickOMania.GenerateImageList(selectedGen.LeastFitSolution, log.OriginalBoard.GetBoardAsArray());
+                Bitmap bstImg = Graph.GenerateGraphImage(log.OriginalMap, selectedGen.MostFitSolution);
+                Bitmap lstImg = Graph.GenerateGraphImage(log.OriginalMap, selectedGen.LeastFitSolution);
 
                 // Place the best fit image
                 BitmapImage bitmapImage = new BitmapImage();
