@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cecs545FinalProject
+namespace AIProject4Nes
 {
     public class Log
     {
-        private ClickOMania.Board board;
+        private Map map;
         private List<GenerationData> logData;
 
-        public ClickOMania.Board OriginalBoard { get { return board;  } }
+        public Map OriginalMap { get { return map;  } }
         
         public int Length { get { return logData.Count;  } }
 
@@ -25,18 +25,15 @@ namespace cecs545FinalProject
 
             private Chromosome mostFit;
             private Chromosome leastFit;
-            private Chromosome WocSln;
 
             public double GenNum { get { return genNum; } }
             public double MaxFitness { get { return mostFit.Fitness; } }
             public double MinFitness { get { return leastFit.Fitness; } }
             public double AvgFitness { get { return avgFitness; } }
             public double StdDevFit { get { return stdDevFit; } }
-            public double WocFitness { get { return WocSln.Fitness; } }
 
             public int[] MostFitSolution { get { return ChromToSolution(mostFit); } }
             public int[] LeastFitSolution { get { return ChromToSolution(leastFit); } }
-            public int[] WocSlnSolution { get { return ChromToSolution(WocSln); } }
 
             public string Blurb
             {
@@ -46,7 +43,7 @@ namespace cecs545FinalProject
                 }
             }
 
-            private GenerationData(int genNumIn, double avgFitIn, double stdDevFitIn, Chromosome mostFitIn, Chromosome leastFitIn, Chromosome WocSlnIn)
+            private GenerationData(int genNumIn, double avgFitIn, double stdDevFitIn, Chromosome mostFitIn, Chromosome leastFitIn)
             {
                 genNum = genNumIn;
                 avgFitness = avgFitIn;
@@ -54,10 +51,9 @@ namespace cecs545FinalProject
 
                 mostFit = mostFitIn;
                 leastFit = leastFitIn;
-                WocSln = WocSlnIn;
             }
 
-            public static GenerationData GenDataFromPopulation(int genNumIn, Population pop, Chromosome WocSlnIn)
+            public static GenerationData GenDataFromPopulation(int genNumIn, Population pop)
             {
                 double avgFitness = pop.AverageFitness;
 
@@ -73,7 +69,7 @@ namespace cecs545FinalProject
                 Chromosome mostFit = pop.GetTop(1)[0];
                 Chromosome leastFit = pop.GetBottom(1)[0];
 
-                return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit, WocSlnIn);
+                return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit);
             }
 
             public static int[] ChromToSolution(Chromosome chrom)
@@ -91,9 +87,9 @@ namespace cecs545FinalProject
             }
         }
 
-        public Log(ClickOMania.Board brd)
+        public Log(Map mapIn)
         {
-            board = brd;
+            map = mapIn;
             logData = new List<GenerationData>();
         }
 
