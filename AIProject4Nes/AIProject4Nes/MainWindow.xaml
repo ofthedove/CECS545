@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AIProject4Nes"
         mc:Ignorable="d"
-        Title="Travelling Sales Person" Height="309.211" Width="525">
+        Title="Travelling Sales Person" Height="309.211" Width="739.267">
     <Grid Margin="0,0,0,2">
         <Label x:Name="inputFileLabel" Content="Input File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" Width="66" VerticalContentAlignment="Center"/>
         <TextBox x:Name="inputFilePath" Height="23" Margin="81,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" ToolTip="path to input file"/>

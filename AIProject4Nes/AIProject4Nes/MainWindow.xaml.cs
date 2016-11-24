@@ -261,7 +261,7 @@ namespace AIProject4Nes
                 var chromosome = new Chromosome();
                 foreach(City city in cities)
                 {
-                    chromosome.Genes.Add(new Gene());
+                    chromosome.Genes.Add(new Gene(city));
                 }
 
                 chromosome.Evaluate(CalculateFitness);
