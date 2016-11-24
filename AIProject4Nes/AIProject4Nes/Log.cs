@@ -32,8 +32,8 @@ namespace AIProject4Nes
             public double AvgFitness { get { return avgFitness; } }
             public double StdDevFit { get { return stdDevFit; } }
 
-            public int[] MostFitSolution { get { return ChromToSolution(mostFit); } }
-            public int[] LeastFitSolution { get { return ChromToSolution(leastFit); } }
+            public Chromosome MostFitSolution { get { return mostFit; } }
+            public Chromosome LeastFitSolution { get { return leastFit; } }
 
             public string Blurb
             {
@@ -70,20 +70,6 @@ namespace AIProject4Nes
                 Chromosome leastFit = pop.GetBottom(1)[0];
 
                 return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit);
-            }
-
-            public static int[] ChromToSolution(Chromosome chrom)
-            {
-                int[] arr = new int[25];
-                int i = 0;
-
-                foreach (Gene gene in chrom)
-                {
-                    arr[i] = (int)gene.ObjectValue;
-                    i++;
-                }
-
-                return arr;
             }
         }
 

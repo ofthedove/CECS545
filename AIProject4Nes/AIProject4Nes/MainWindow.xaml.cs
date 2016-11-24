@@ -264,6 +264,7 @@ namespace AIProject4Nes
                     chromosome.Genes.Add(new Gene());
                 }
 
+                chromosome.Evaluate(CalculateFitness);
                 population.Solutions.Add(chromosome);
             }
 
@@ -276,15 +277,12 @@ namespace AIProject4Nes
         /// <returns>Between 0 and 1 with 1 being being most fit</returns>
         private double CalculateFitness(Chromosome chromosome)
         {
-            int[] arr = Log.GenerationData.ChromToSolution(chromosome);
-            // Yes, I know that's a weird place for that function to be...
-
             double fitnessValue = -1;
             if (chromosome != null)
             {
-                double value = Graph.CalculateRouteLength(map, Log.GenerationData.ChromToSolution(chromosome));
+                double value = Graph.CalculateRouteLength(map, chromosome);
 
-                return 1 - ((value - MIN_ROUTE_LENGTH) / (MAX_ROUTE_LENGTH - MIN_ROUTE_LENGTH));
+                fitnessValue = 1 - ((value - MIN_ROUTE_LENGTH) / (MAX_ROUTE_LENGTH - MIN_ROUTE_LENGTH));
             }
             else
             {
