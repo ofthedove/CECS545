@@ -9,25 +9,38 @@ namespace AIProject4Nes
 {
     class Graph
     {
-        private Map map;
-        //private List<Edge> edges;
-
-        public Graph(Map mapIn, int[] solution)
+        public static double CalculateRouteLength(Map map, int[] solution)
         {
-            map = mapIn;
-            /*
-            Edge edge;
-            for (int i = 1; i < solution.Length; i++)
+            if (solution.Length < 2)
             {
-                edge = new Edge();
-                edge.startID = solution[i - 1];
-                edge.endID = solution[i];
-                edges.Add(edge);
+                // We should never have fewer than four cities, so this shouldn't happen. If it does
+                // there are probably bigger problems that need to be addressed
+                throw new ApplicationException("Too few elements in solution! Can't calculate route length");
             }
-            edge = new Edge();
-            edge.startID = solution[solution.Length - 1];
-            edge.endID = solution[0];
-            edges.Add(edge);*/
+
+            double runningDistance = 0;
+
+            int i = 0;
+            City city1 = map.GetCityByID(solution[i++]);
+            City city2 = map.GetCityByID(solution[i++]);
+            if (city1 == null || city2 == null)
+            {
+                throw new ApplicationException("Fatal error: solution contains non-existant city");
+            }
+            while (i <= solution.Length)
+            {
+                runningDistance += city1.DistanceTo(city2);
+
+                city1 = city2;
+                city2 = map.GetCityByID(solution[i++ % solution.Length]);
+
+                if(city2 == null)
+                {
+                    throw new ApplicationException("Fatal error: solution contains non-existant city");
+                }
+            }
+
+            return runningDistance;
         }
 
         public static Bitmap GenerateGraphImage(Map map, int[] solution)
@@ -76,12 +89,6 @@ namespace AIProject4Nes
                 city1 = city2;
                 city2 = map.GetCityByID(solution[i++ % solution.Length]);
             }
-        }
-
-        private struct Edge
-        {
-            public int startID;
-            public int endID;
         }
     }
 }

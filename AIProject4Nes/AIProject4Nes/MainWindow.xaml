@@ -15,8 +15,8 @@
         <Label x:Name="elitismPercentageLabel" Content="Elitism Percentage" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" ToolTip="Percentage of top individuals that will pass on, unchanged, into the next generation"/>
         <Label x:Name="populationSizeLabel" Content="Population Size" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" ToolTip="Initial population size"/>
         <Label x:Name="maxGenerationsLabel" Content="Max Generations" HorizontalAlignment="Left" Margin="10,162,0,0" VerticalAlignment="Top" ToolTip="Maximum number of generations to run before terminating"/>
-        <Slider x:Name="crossoverProbabilitySlider" Margin="137,42,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="85"/>
-        <Slider x:Name="mutationProbabilitySlider" Margin="137,73,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="8"/>
+        <Slider x:Name="crossoverProbabilitySlider" Margin="137,42,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="80"/>
+        <Slider x:Name="mutationProbabilitySlider" Margin="137,73,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="2"/>
         <Slider x:Name="elitismPercentageSlider" Margin="137,104,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="5"/>
         <Slider x:Name="populationSizeSlider" Margin="137,135,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="10" SmallChange="2" TickFrequency="10" Value="50" Minimum="2"/>
         <Slider x:Name="maxGenerationsSlider" Margin="137,166,90,0" VerticalAlignment="Top" Maximum="1000" LargeChange="50" SmallChange="10" TickFrequency="100" Value="100" Minimum="10"/>

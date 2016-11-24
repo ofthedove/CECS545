@@ -11,6 +11,7 @@ namespace AIProject4Nes
         private int id;
         private double xCoord;
         private double yCoord;
+        private City city;
 
         public int ID { get { return id; } }
         public double X { get { return xCoord; } }
@@ -21,6 +22,22 @@ namespace AIProject4Nes
             id = idIn;
             xCoord = xCoordIn;
             yCoord = yCoordIn;
+        }
+
+        public double DistanceTo(City city)
+        {
+            return DistanceBetween(this, city);
+        }
+
+        /// <summary>
+        /// Calculates distance between two cities to be used as weight of edge
+        /// </summary>
+        /// <param name="city1">First city</param>
+        /// <param name="city2">Second city</param>
+        /// <returns>Distance between input cities</returns>
+        private static double DistanceBetween(City city1, City city2)
+        {
+            return Math.Sqrt(Math.Pow((city2.X - city1.X), 2) + Math.Pow((city2.Y - city1.Y), 2));
         }
 
         public int CompareTo(object obj)

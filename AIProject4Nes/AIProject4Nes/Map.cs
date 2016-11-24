@@ -33,6 +33,11 @@ namespace AIProject4Nes
             return null;
         }
 
+        public List<City> GetListOfCities()
+        {
+            return Cities;
+        }
+
         public void DrawCities(Graphics g, double width, double height, int margin)
         {
             SolidBrush outlineBrush = new SolidBrush(Color.Black);
