@@ -28,7 +28,7 @@ namespace AIProject4Nes
             {
                 throw new ApplicationException("Fatal error: solution contains non-existant city");
             }
-            while (i <= solution.Count)
+            while (i <= solution.Count + 1)
             {
                 runningDistance += city1.DistanceTo(city2);
 
@@ -78,7 +78,7 @@ namespace AIProject4Nes
             int i = 0;
             City city1 = (City)solution.Genes[i++].ObjectValue;
             City city2 = (City)solution.Genes[i++].ObjectValue;
-            while (i <= solution.Count)
+            while (i <= solution.Count + 1)
             {
                 int startXCoord = (int)((city1.X * xCoordFactor) + xCoordOffset);
                 int startYCoord = (int)((city1.Y * yCoordFactor) + yCoordOffset);
