@@ -39,7 +39,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} : Max {2,5:0.000} | Avg {3,5:0.000} | SDv {4,5:0.000}", genNum, MaxFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} : Max {1,5:0.000} | Min {2,5:0.000} | Avg {3,5:0.000} | SDv {4,5:0.000}", genNum, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
