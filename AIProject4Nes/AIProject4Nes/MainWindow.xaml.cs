@@ -1,4 +1,5 @@
 ﻿using GAF;
+using GAF.Extensions;
 using GAF.Operators;
 using Microsoft.Win32;
 using System;
@@ -257,12 +258,14 @@ namespace AIProject4Nes
 
             for (int i = 0; i < initialPopulationSize; i++)
             {
-                cities.Shuffle();
                 var chromosome = new Chromosome();
                 foreach(City city in cities)
                 {
                     chromosome.Genes.Add(new Gene(city));
                 }
+
+                var rnd = GAF.Threading.RandomProvider.GetThreadRandom();
+                chromosome.Genes.ShuffleFast(rnd);
 
                 chromosome.Evaluate(CalculateFitness);
                 population.Solutions.Add(chromosome);

@@ -61,7 +61,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="City.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Map.cs" />
