@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AIProject4Nes"
         mc:Ignorable="d"
-        Title="Travelling Sales Person" Height="309.211" Width="739.267">
+        Title="Travelling Sales Person" Height="343.711" Width="739.267">
     <Grid Margin="0,0,0,2">
         <Label x:Name="inputFileLabel" Content="Input File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="23" Width="66" VerticalContentAlignment="Center"/>
         <TextBox x:Name="inputFilePath" Height="23" Margin="81,10,90,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" ToolTip="path to input file"/>
@@ -25,12 +25,15 @@
         <TextBox x:Name="elitismPercentageTextBox" Height="26" Margin="0,100,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" VerticalContentAlignment="Center" Text="{Binding ElementName=elitismPercentageSlider,Path=Value,StringFormat=#}"/>
         <TextBox x:Name="populationSizeTextBox" Height="26" Margin="0,131,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" VerticalContentAlignment="Center" Text="{Binding Value, ElementName=populationSizeSlider,StringFormat=#}"/>
         <TextBox x:Name="maxGenerationsTextBox" Height="26" Margin="0,162,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" VerticalContentAlignment="Center" Text="{Binding Value, ElementName=maxGenerationsSlider,StringFormat=#}"/>
-        <Button x:Name="startButton" Content="Start" Margin="10,193,10,41" Click="startButton_Click"/>
+        <Button x:Name="startButton" Content="Start" Margin="10,224,10,41" Click="startButton_Click"/>
         <Label x:Name="generationLabel" Content="Generation:" HorizontalAlignment="Left" Margin="10,0,0,10" Height="26" VerticalAlignment="Bottom"/>
         <Label x:Name="generationValueLabel" Content="0" HorizontalAlignment="Left" Margin="86,0,0,10" Width="64" Height="26" VerticalAlignment="Bottom"/>
         <Label x:Name="fitnessLabel" Content="Fitness:" HorizontalAlignment="Left" Margin="155,0,0,10" RenderTransformOrigin="-1.262,0.287" Height="26" VerticalAlignment="Bottom"/>
         <Label x:Name="fitnessValueLabel" Content="0" HorizontalAlignment="Left" Margin="209,0,0,10" Height="26" VerticalAlignment="Bottom"/>
         <Label x:Name="statusLabel" Content="Not Started" Margin="230,0,10,10" Height="26" VerticalAlignment="Bottom" HorizontalContentAlignment="Right"/>
+        <Label x:Name="plateauSizeLabel" Content="Plateau Size" HorizontalAlignment="Left" Margin="10,193,0,0" VerticalAlignment="Top" ToolTip="Plateau size to trigger termination"/>
+        <Slider x:Name="plateauSizeSlider" Margin="137,197,90,0" VerticalAlignment="Top" Maximum="100" LargeChange="5" SmallChange="1" TickFrequency="100" Value="5"/>
+        <TextBox x:Name="plateauSizeTextBox" Height="26" Margin="0,193,10,0" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" VerticalContentAlignment="Center" Text="{Binding Value, ElementName=plateauSizeSlider, StringFormat=#}"/>
 
     </Grid>
 </Window>

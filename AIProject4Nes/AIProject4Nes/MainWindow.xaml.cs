@@ -44,7 +44,8 @@ namespace AIProject4Nes
         int maxGenerations = 1000;
         Map map;
 
-        Queue<double> lastFiveGens;
+        Queue<double> plateauDetectorQueue;
+        int plateauDetectorSize = 5;
         Log log;
 
         public MainWindow()
@@ -158,11 +159,11 @@ namespace AIProject4Nes
 
             // Maintain lastFiveGens queue
             // Put this generations fitness onto the queue
-            lastFiveGens.Enqueue(e.Population.MaximumFitness);
+            plateauDetectorQueue.Enqueue(e.Population.MaximumFitness);
             // Pull 6th last generation from queue, if it exists
-            if (lastFiveGens.Count > 5)
+            if (plateauDetectorQueue.Count > plateauDetectorSize)
             {
-                lastFiveGens.Dequeue();
+                plateauDetectorQueue.Dequeue();
             }
         }
 
@@ -215,8 +216,9 @@ namespace AIProject4Nes
             elitismPercentage = Convert.ToInt32(elitismPercentageSlider.Value);
             initialPopulationSize = Convert.ToInt32(populationSizeSlider.Value);
             maxGenerations = Convert.ToInt32(maxGenerationsSlider.Value);
+            plateauDetectorSize = Convert.ToInt32(plateauSizeSlider.Value);
 
-            lastFiveGens = new Queue<double>();
+            plateauDetectorQueue = new Queue<double>();
 
             var population = GenerateInitialPopulation(initialPopulationSize);
 
@@ -314,20 +316,24 @@ namespace AIProject4Nes
             if (System.Math.Abs(population.MaximumFitness - 1) < MAX_FLOAT_DIFF)
                 return true;
 
-            // If we got the same fitness for the last five generations, terminate
-            if (lastFiveGens.Count >= 5) // Only run if we have five generations worth of data to check
+            // Only run plateau detector if the size is 2 or bigger. 0 or 1 means don't run
+            if (plateauDetectorSize > 1)
             {
-                double value = lastFiveGens.ElementAt(0); // Get the value of the oldest run
-                bool flag = false; // This flag goes true if we have different values and need to continue
-                for (int i = 1; i < lastFiveGens.Count; i++) // Iterate through the queue
+                // If we got the same fitness for the last five generations, terminate
+                if (plateauDetectorQueue.Count >= plateauDetectorSize) // Only run if we have enough generations worth of data to check
                 {
-                    if (System.Math.Abs((double)lastFiveGens.ElementAt(i) - (double)value) > MAX_FLOAT_DIFF)
-                    { // If the values are sufficeintly different
-                        flag = true; // Flag that we need to keep running
-                        break; // No point continuing, break
+                    double value = plateauDetectorQueue.ElementAt(0); // Get the value of the oldest run
+                    bool flag = false; // This flag goes true if we have different values and need to continue
+                    for (int i = 1; i < plateauDetectorQueue.Count; i++) // Iterate through the queue
+                    {
+                        if (System.Math.Abs((double)plateauDetectorQueue.ElementAt(i) - (double)value) > MAX_FLOAT_DIFF)
+                        { // If the values are sufficeintly different
+                            flag = true; // Flag that we need to keep running
+                            break; // No point continuing, break
+                        }
                     }
+                    return !flag; // If flag is true we need to keep going, if we got here and flag is false we need to terminate
                 }
-                return !flag; // If flag is true we need to keep going, if we got here and flag is false we need to terminate
             }
 
             // We aren't past maxGenerations, we haven't solved the problem, and we don't have enough data to detect a plateu
