@@ -51,10 +51,10 @@ namespace AIProject4Nes
 
                 // Update the general info section
                 generationValueLabel.Content = selectedGen.GenNum;
-                maxFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.MaxFitness);
-                minFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.MinFitness);
-                avgFitnessValueLabel.Content = String.Format("{0:0.000}", selectedGen.AvgFitness);
-                stdDevValueLabel.Content = String.Format("{0:0.000}", selectedGen.StdDevFit);
+                maxFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.MaxFitness);
+                minFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.MinFitness);
+                avgFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.AvgFitness);
+                stdDevValueLabel.Content = String.Format("{0:#####}", selectedGen.StdDevFit);
 
                 // ---- Update the board viewer ----
                 // Clear the image viewers

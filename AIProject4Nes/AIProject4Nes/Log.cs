@@ -27,8 +27,8 @@ namespace AIProject4Nes
             private Chromosome leastFit;
 
             public double GenNum { get { return genNum; } }
-            public double MaxFitness { get { return mostFit.Fitness; } }
-            public double MinFitness { get { return leastFit.Fitness; } }
+            public double MaxFitness { get { return (double)mostFit.Tag; } }
+            public double MinFitness { get { return (double)leastFit.Tag; } }
             public double AvgFitness { get { return avgFitness; } }
             public double StdDevFit { get { return stdDevFit; } }
 
@@ -39,7 +39,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} : Max {1,5:0.000} | Min {2,5:0.000} | Avg {3,5:0.000} | SDv {4,5:0.000}", genNum, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:#####} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
@@ -55,13 +55,18 @@ namespace AIProject4Nes
 
             public static GenerationData GenDataFromPopulation(int genNumIn, Population pop)
             {
-                double avgFitness = pop.AverageFitness;
+                double runningSum = 0;
+                foreach (Chromosome chrom in pop.Solutions)
+                {
+                    runningSum += (double)chrom.Tag;
+                }
+                double avgFitness = runningSum / pop.PopulationSize;
 
                 double stdDevFit = 0;
-                double runningSum = 0;
+                runningSum = 0;
                 foreach(Chromosome chrom in pop.Solutions)
                 {
-                    runningSum += System.Math.Pow(chrom.Fitness - avgFitness, 2);
+                    runningSum += System.Math.Pow((double)chrom.Tag - avgFitness, 2);
                 }
                 stdDevFit = runningSum / (double)pop.PopulationSize;
                 stdDevFit = System.Math.Sqrt(stdDevFit);

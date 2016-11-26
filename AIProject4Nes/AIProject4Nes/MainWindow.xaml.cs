@@ -280,12 +280,12 @@ namespace AIProject4Nes
         /// <returns>Between 0 and 1 with 1 being being most fit</returns>
         private double CalculateFitness(Chromosome chromosome)
         {
-            double fitnessValue = -1;
+            double fitnessValue = -1, pathLength = -1;
             if (chromosome != null)
             {
-                double value = Graph.CalculateRouteLength(map, chromosome);
+                pathLength = Graph.CalculateRouteLength(map, chromosome);
 
-                fitnessValue = 1 - ((value - MIN_ROUTE_LENGTH) / (MAX_ROUTE_LENGTH - MIN_ROUTE_LENGTH));
+                fitnessValue = 1 - ((pathLength - MIN_ROUTE_LENGTH) / (MAX_ROUTE_LENGTH - MIN_ROUTE_LENGTH));
             }
             else
             {
@@ -293,6 +293,8 @@ namespace AIProject4Nes
                 throw new ArgumentNullException("chromosome", "The specified Chromosome is null.");
             }
 
+            // Set the chromosome's tag to be the actual path length, so we can use it later
+            chromosome.Tag = pathLength;
             return fitnessValue;
         }
 
