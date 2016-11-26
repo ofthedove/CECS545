@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="ResultNavigator" Height="467.606" Width="905.853">
     <Grid>
@@ -17,7 +18,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="genListBox" Margin="10" SelectionChanged="genListBox_SelectionChanged" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <ListBox x:Name="genListBox" Margin="10,10,10,35" SelectionChanged="genListBox_SelectionChanged" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="1"/>
         <TabControl x:Name="tabControl" Margin="10" Grid.ColumnSpan="3" Grid.Row="1">
             <TabItem x:Name="BestIndvTab" Header="Best Fit">
                 <Grid Background="#FFE5E5E5">
@@ -30,6 +31,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <oxy:PlotView x:Name="genDataPlot" Model="{Binding Path=MyModel}" Margin="10" Grid.Row="1" Grid.ColumnSpan="3"/>
         <Label x:Name="generationLabel" Content="Generation" Margin="10,10,67,0" VerticalAlignment="Top" Height="29"/>
         <Label x:Name="generationValueLabel" Content="--" Margin="0,10,10,0" VerticalAlignment="Top" Height="29" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="50"/>
         <Label x:Name="maxFitnessLabel" Content="Max Fitness" Margin="10,10,66,0" VerticalAlignment="Top" Height="29" Grid.Column="1"/>
@@ -40,6 +42,7 @@
         <Label x:Name="avgFitnessValueLabel" Content="--" Margin="0,10,10,0" VerticalAlignment="Top" Height="29" RenderTransformOrigin="-0.534,0.613" Grid.Column="3" HorizontalAlignment="Right" Width="47" HorizontalContentAlignment="Right"/>
         <Label x:Name="stdDevLabel" Content="Std Dev" Margin="10,10,67,0" VerticalAlignment="Top" Height="29" Grid.Column="4"/>
         <Label x:Name="stdDevValueLabel" Content="--" Margin="0,10,10,0" VerticalAlignment="Top" Height="29" RenderTransformOrigin="-0.534,0.613" Grid.Column="4" HorizontalAlignment="Right" Width="47" HorizontalContentAlignment="Right"/>
+        <Button x:Name="showPlotButton" Content="Show Plot" Grid.Column="3" Margin="10,0,10,10" Grid.Row="1" Grid.ColumnSpan="2" Height="20" VerticalAlignment="Bottom" Click="showPlotButton_Click"/>
 
     </Grid>
 </Window>

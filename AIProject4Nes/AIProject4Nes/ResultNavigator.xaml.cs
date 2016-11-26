@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using OxyPlot;
+using OxyPlot.Series;
 
 namespace AIProject4Nes
 {
@@ -24,9 +26,14 @@ namespace AIProject4Nes
     {
         private Log log;
 
+        private bool isPlotVisible;
+
+        public PlotModel MyModel { get; private set; }
+
         public ResultNavigator(Log logIn)
         {
             InitializeComponent();
+            DataContext = this;
 
             log = logIn;
 
@@ -39,12 +46,35 @@ namespace AIProject4Nes
 
             // Select the last generation in the generation list
             genListBox.SelectedIndex = genListBox.Items.Count - 1;
+
+            // Plot stuff
+            var maxSeries = new LineSeries();
+            var minSeries = new LineSeries();
+            var avgSeries = new LineSeries();
+
+            for (int i = 0; i < log.Length; i++)
+            {
+                var genData = log.ReadFull(i);
+                maxSeries.Points.Add(new DataPoint(genData.GenNum, genData.MaxFitness));
+                minSeries.Points.Add(new DataPoint(genData.GenNum, genData.MinFitness));
+                avgSeries.Points.Add(new DataPoint(genData.GenNum, genData.AvgFitness));
+            }
+
+            MyModel = new PlotModel();
+            
+            MyModel.Series.Add(maxSeries);
+            MyModel.Series.Add(minSeries);
+            MyModel.Series.Add(avgSeries);
         }
 
         private void genListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (genListBox.SelectedItem != null)
             {
+                // Hide the plot whenever a generation is selected
+                isPlotVisible = false;
+                UpdatePlotVisibility();
+
                 // Retrieve the data relating to the selected generation
                 int genIndex = genListBox.SelectedIndex;
                 Log.GenerationData selectedGen = log.ReadFull(genIndex);
@@ -69,7 +99,7 @@ namespace AIProject4Nes
                 BitmapImage bitmapImage = new BitmapImage();
                 using (MemoryStream memory = new MemoryStream())
                 {
-                    bstImg.Save(memory, ImageFormat.Png);
+                    bstImg.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                     memory.Position = 0;
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = memory;
@@ -82,7 +112,7 @@ namespace AIProject4Nes
                 bitmapImage = new BitmapImage();
                 using (MemoryStream memory = new MemoryStream())
                 {
-                    lstImg.Save(memory, ImageFormat.Png);
+                    lstImg.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
                     memory.Position = 0;
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = memory;
@@ -90,6 +120,28 @@ namespace AIProject4Nes
                     bitmapImage.EndInit();
                 }
                 LeastFitImage.Source = bitmapImage;
+            }
+        }
+
+        private void showPlotButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Toggle plot visibility
+            isPlotVisible = !isPlotVisible;
+
+            UpdatePlotVisibility();
+        }
+
+        private void UpdatePlotVisibility()
+        {
+            if (isPlotVisible)
+            {
+                genDataPlot.Visibility = Visibility.Visible;
+                showPlotButton.Content = "Hide Plot";
+            }
+            else
+            {
+                genDataPlot.Visibility = Visibility.Hidden;
+                showPlotButton.Content = "Show Plot";
             }
         }
     }

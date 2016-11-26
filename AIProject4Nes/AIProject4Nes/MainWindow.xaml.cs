@@ -120,7 +120,7 @@ namespace AIProject4Nes
                 // Make sure we actually have three pieces of data. If we don't it's a bad input file, we have to quit
                 if (values.Length != 3)
                 {
-                    throw new ArgumentException("Invalid input data! Line does not contain three values. Bad Line: " + line, "inputDataString");
+                    throw new ApplicationException("Invalid input data! Line does not contain three values. Bad Line: " + line);
                 }
 
                 // Create a city object from the city data we got from the input line
@@ -132,7 +132,7 @@ namespace AIProject4Nes
                 // If the id isn't a number, or a coordinate isn't a double, it's a bad input file, we have to quit
                 catch (FormatException)
                 {
-                    throw new ArgumentException("Invalid input data! Line contains bad values. Bad Line: " + line, "inputDataString");
+                    throw new ApplicationException("Invalid input data! Line contains bad values. Bad Line: " + line);
                 }
 
                 mapB.AddCity(newCity);
