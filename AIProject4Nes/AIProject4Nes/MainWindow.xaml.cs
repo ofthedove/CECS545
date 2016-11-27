@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,7 @@ namespace AIProject4Nes
         const double MIN_ROUTE_LENGTH = 0;
 
         Random rand = new Random();
+        Stopwatch stopwatch;
         BackgroundWorker b;
 
         double crossoverProbability = 0.85;
@@ -176,7 +178,10 @@ namespace AIProject4Nes
 
         private void bw_RunWorkerComplete(object o, RunWorkerCompletedEventArgs args)
         {
-            statusLabel.Content = "Done...";
+            stopwatch.Stop();
+            double elapsedTime = (double)stopwatch.ElapsedMilliseconds / 1000.0;
+
+            statusLabel.Content = String.Format("Done in {0:0.000} sec", elapsedTime);
             startButton.IsEnabled = true;
 
             //log.SaveBrief(@"C:\Users\Andrew\Desktop\output.txt");
@@ -240,6 +245,9 @@ namespace AIProject4Nes
             ga.Operators.Add(mutation);
 
             ga.OnGenerationComplete += ga_OnGenerationComplete;
+
+            // Timing
+            stopwatch = Stopwatch.StartNew();
 
             BackgroundWorker bw = new BackgroundWorker();
             bw.WorkerReportsProgress = true;
