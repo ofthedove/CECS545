@@ -229,6 +229,7 @@ namespace AIProject4Nes
             {
                 CrossoverType = CrossoverType.DoublePointOrdered
             };
+            crossover.ReplacementMethod = ReplacementMethod.DeleteLast;
 
             var mutation = new SwapMutate(mutationProbability);
 
