@@ -20,40 +20,47 @@ namespace AIProject4Nes
         public class GenerationData
         {
             private double genNum;
+            private double genTime;
             private double avgFitness;
             private double stdDevFit;
 
             private Chromosome mostFit;
             private Chromosome leastFit;
+            private Chromosome wocSol;
 
             public double GenNum { get { return genNum; } }
+            public double GenTime { get { return genTime; } }
             public double MaxFitness { get { return (double)mostFit.Tag; } }
             public double MinFitness { get { return (double)leastFit.Tag; } }
+            public double WoCFitness { get { return (double)wocSol.Tag; } }
             public double AvgFitness { get { return avgFitness; } }
             public double StdDevFit { get { return stdDevFit; } }
 
             public Chromosome MostFitSolution { get { return mostFit; } }
             public Chromosome LeastFitSolution { get { return leastFit; } }
+            public Chromosome WoCSolution { get { return wocSol; } }
 
             public string Blurb
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:#####} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} | Time {1,5:###.#} : WoC {2,5:#####} | Max {3,5:#####} | Min {4,5:#####} | Avg {5,5:#####} | SDv {6,5:#####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
-            private GenerationData(int genNumIn, double avgFitIn, double stdDevFitIn, Chromosome mostFitIn, Chromosome leastFitIn)
+            private GenerationData(int genNumIn, double genTimeIn, double avgFitIn, double stdDevFitIn, Chromosome wocSolIn, Chromosome mostFitIn, Chromosome leastFitIn)
             {
                 genNum = genNumIn;
+                genTime = genTimeIn;
                 avgFitness = avgFitIn;
                 stdDevFit = stdDevFitIn;
 
+                wocSol = wocSolIn;
                 mostFit = mostFitIn;
                 leastFit = leastFitIn;
             }
 
-            public static GenerationData GenDataFromPopulation(int genNumIn, Population pop)
+            public static GenerationData GenDataFromPopulation(int genNumIn, double genTimeIn, Population pop, Chromosome wocSolIn)
             {
                 double runningSum = 0;
                 foreach (Chromosome chrom in pop.Solutions)
@@ -70,11 +77,11 @@ namespace AIProject4Nes
                 }
                 stdDevFit = runningSum / (double)pop.PopulationSize;
                 stdDevFit = System.Math.Sqrt(stdDevFit);
-
+                
                 Chromosome mostFit = pop.GetTop(1)[0];
                 Chromosome leastFit = pop.GetBottom(1)[0];
 
-                return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit);
+                return new GenerationData(genNumIn, genTimeIn, avgFitness, stdDevFit, wocSolIn, mostFit, leastFit);
             }
         }
 

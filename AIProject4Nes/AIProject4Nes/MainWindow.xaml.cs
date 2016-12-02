@@ -153,7 +153,7 @@ namespace AIProject4Nes
         private void ga_OnGenerationComplete(object sender, GaEventArgs e)
         {
             // Add this generation's data to our log
-            log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, e.Population));
+            log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, stopwatch.Elapsed.TotalSeconds, e.Population, e.Population.GetTop(2)[1]));
 
             // Report the current state of execution back to the main UI thread
             GenerationState gs = new GenerationState() { genNum = e.Generation, maxFit = e.Population.MaximumFitness };

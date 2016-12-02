@@ -81,6 +81,8 @@ namespace AIProject4Nes
 
                 // Update the general info section
                 generationValueLabel.Content = selectedGen.GenNum;
+                genTimeValueLabel.Content = String.Format("{0:##0.0}", selectedGen.GenTime);
+                wocFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.WoCFitness);
                 maxFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.MaxFitness);
                 minFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.MinFitness);
                 avgFitnessValueLabel.Content = String.Format("{0:#####}", selectedGen.AvgFitness);
