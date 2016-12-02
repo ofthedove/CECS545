@@ -50,6 +50,8 @@ namespace AIProject4Nes
         int plateauDetectorSize = 5;
         Log log;
 
+        GeneticAlgorithm ga;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -150,8 +152,10 @@ namespace AIProject4Nes
             rn.Show();
         }
 
+        double lastBestFit;
         private void ga_OnGenerationComplete(object sender, GaEventArgs e)
         {
+            ga.Pause();
             // Add this generation's data to our log
             log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, e.Population));
 
@@ -167,6 +171,7 @@ namespace AIProject4Nes
             {
                 plateauDetectorQueue.Dequeue();
             }
+            ga.Resume();
         }
 
         private void bw_ProgressChanged(object o, ProgressChangedEventArgs args)
@@ -238,7 +243,7 @@ namespace AIProject4Nes
 
             var mutation = new SwapMutate(mutationProbability);
 
-            var ga = new GeneticAlgorithm(population, CalculateFitness);
+            ga = new GeneticAlgorithm(population, CalculateFitness);
 
             ga.Operators.Add(elite);
             ga.Operators.Add(crossover);
@@ -285,6 +290,7 @@ namespace AIProject4Nes
             return population;
         }
 
+        Dictionary<int, double> debugThing = new Dictionary<int, double>();
         /// <summary>
         /// Fitness Function
         /// </summary>
@@ -297,6 +303,17 @@ namespace AIProject4Nes
                 pathLength = Graph.CalculateRouteLength(map, chromosome);
 
                 fitnessValue = 1 - ((pathLength - MIN_ROUTE_LENGTH) / (MAX_ROUTE_LENGTH - MIN_ROUTE_LENGTH));
+
+                if(debugThing.ContainsKey((int)System.Math.Floor(pathLength*10)))
+                {
+                    double value;
+                    debugThing.TryGetValue((int)System.Math.Floor(pathLength*10), out value);
+                    Debug.Assert(System.Math.Abs(value - fitnessValue) < 0.000001);
+                }
+                else
+                {
+                    debugThing.Add((int)System.Math.Floor(pathLength*10), fitnessValue);
+                }
             }
             else
             {

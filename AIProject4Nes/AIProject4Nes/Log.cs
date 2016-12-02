@@ -1,6 +1,7 @@
 ﻿using GAF;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace AIProject4Nes
             private double genNum;
             private double avgFitness;
             private double stdDevFit;
+            private double gafFitness;
 
             private Chromosome mostFit;
             private Chromosome leastFit;
@@ -31,6 +33,7 @@ namespace AIProject4Nes
             public double MinFitness { get { return (double)leastFit.Tag; } }
             public double AvgFitness { get { return avgFitness; } }
             public double StdDevFit { get { return stdDevFit; } }
+            public double GAFFitness {  get { return gafFitness; } }
 
             public Chromosome MostFitSolution { get { return mostFit; } }
             public Chromosome LeastFitSolution { get { return leastFit; } }
@@ -39,15 +42,16 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:#####} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:.####} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, MinFitness, avgFitness, gafFitness);
                 }
             }
 
-            private GenerationData(int genNumIn, double avgFitIn, double stdDevFitIn, Chromosome mostFitIn, Chromosome leastFitIn)
+            private GenerationData(int genNumIn, double avgFitIn, double stdDevFitIn, Chromosome mostFitIn, Chromosome leastFitIn, double gafFitIn)
             {
                 genNum = genNumIn;
                 avgFitness = avgFitIn;
                 stdDevFit = stdDevFitIn;
+                gafFitness = gafFitIn;
 
                 mostFit = mostFitIn;
                 leastFit = leastFitIn;
@@ -55,6 +59,11 @@ namespace AIProject4Nes
 
             public static GenerationData GenDataFromPopulation(int genNumIn, Population pop)
             {
+                double gafFit = pop.MaximumFitness;
+                Chromosome mostFitt = pop.GetTop(1)[0];
+                double value = mostFitt.Fitness;
+                Debug.Assert(gafFit == value);
+
                 double runningSum = 0;
                 foreach (Chromosome chrom in pop.Solutions)
                 {
@@ -74,7 +83,7 @@ namespace AIProject4Nes
                 Chromosome mostFit = pop.GetTop(1)[0];
                 Chromosome leastFit = pop.GetBottom(1)[0];
 
-                return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit);
+                return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit, gafFit);
             }
         }
 
