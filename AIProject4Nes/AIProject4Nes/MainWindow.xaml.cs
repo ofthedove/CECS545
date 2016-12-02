@@ -156,21 +156,27 @@ namespace AIProject4Nes
         private void ga_OnGenerationComplete(object sender, GaEventArgs e)
         {
             ga.Pause();
+
+            Debug.Assert(e.Population.MaximumFitness == e.Population.GetTop(1)[0].Fitness);
+
             // Add this generation's data to our log
             log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, e.Population));
 
             // Report the current state of execution back to the main UI thread
-            GenerationState gs = new GenerationState() { genNum = e.Generation, maxFit = e.Population.MaximumFitness };
+            GenerationState gs = new GenerationState() { genNum = e.Generation, maxFit = e.Population.GetTop(1)[0].Fitness};
             b.ReportProgress(-1, gs);
 
             // Maintain lastFiveGens queue
             // Put this generations fitness onto the queue
-            plateauDetectorQueue.Enqueue(e.Population.MaximumFitness);
+            plateauDetectorQueue.Enqueue(e.Population.GetTop(1)[0].Fitness);
             // Pull 6th last generation from queue, if it exists
             if (plateauDetectorQueue.Count > plateauDetectorSize)
             {
                 plateauDetectorQueue.Dequeue();
             }
+
+            Console.WriteLine("gen {0:###}   popFit {1:0.000000}   mostFit {2:0.000000}   mostFitPath {3:####}", e.Generation, e.Population.MaximumFitness, e.Population.GetTop(1)[0].Fitness, (double)e.Population.GetTop(1)[0].Tag);
+
             ga.Resume();
         }
 
@@ -308,7 +314,7 @@ namespace AIProject4Nes
                 {
                     double value;
                     debugThing.TryGetValue((int)System.Math.Floor(pathLength*10), out value);
-                    Debug.Assert(System.Math.Abs(value - fitnessValue) < 0.000001);
+                    //Debug.Assert(System.Math.Abs(value - fitnessValue) < 0.000001);
                 }
                 else
                 {

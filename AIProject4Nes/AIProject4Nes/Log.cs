@@ -42,7 +42,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:.####} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, MinFitness, avgFitness, gafFitness);
+                    return string.Format("Gen {0,3:###} : Max {1,5:#####} | Min {2,5:.000000000000} | Avg {3,5:#####} | SDv {4,5:#####}", genNum, MaxFitness, gafFitness, avgFitness, stdDevFit);
                 }
             }
 
@@ -80,8 +80,8 @@ namespace AIProject4Nes
                 stdDevFit = runningSum / (double)pop.PopulationSize;
                 stdDevFit = System.Math.Sqrt(stdDevFit);
 
-                Chromosome mostFit = pop.GetTop(1)[0];
-                Chromosome leastFit = pop.GetBottom(1)[0];
+                Chromosome mostFit = pop.GetTop(1)[0].DeepClone();
+                Chromosome leastFit = pop.GetBottom(1)[0].DeepClone();
 
                 return new GenerationData(genNumIn, avgFitness, stdDevFit, mostFit, leastFit, gafFit);
             }
