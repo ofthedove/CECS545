@@ -10,6 +10,37 @@ namespace AIProject4Nes
 {
     class Graph
     {
+        private Map map;
+
+        public bool IsComplete
+        {
+            get
+            {
+                throw new NotImplementedException();
+                // returns true if the current graph has a path that goes through all cities exactly once.
+                // Probably want an internal class variable for this and set that when adding or removing edges
+            }
+        }
+
+        public Graph(Map map)
+        {
+            this.map = map;
+
+            // need to add edge list and crap too (probably want used and unused cities
+        }
+
+        internal void TryAddEdge(City item1, City item2)
+        {
+            // Attempt to add an edge. Don't create sub-cycles or visit a city twice
+            throw new NotImplementedException();
+        }
+
+        internal Chromosome ToChromosome()
+        {
+            // turn the internal list of edges into a list of genes into a chromosome
+            throw new NotImplementedException();
+        }
+
         public static double CalculateRouteLength(Map map, Chromosome solution)
         {
             if (solution.Count < 2)

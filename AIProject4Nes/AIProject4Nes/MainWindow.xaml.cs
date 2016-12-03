@@ -314,15 +314,54 @@ namespace AIProject4Nes
         {
             List<Chromosome> Experts = new List<Chromosome>(population.GetTopPercent(expertPercentage));
 
-            var wocChromosome = new Chromosome();
+            var popularities = new Dictionary<Tuple<City, City>, int>();
 
             foreach(Chromosome expert in Experts)
             {
+                Gene gene1 = expert.Genes[0];
+                Gene gene2;
+                for(int i = 0; i < expert.Genes.Count; i++)
+                {
+                    gene2 = expert.Genes[(i+1)%expert.Genes.Count];
+                    
+                    var city1 = (City)(gene1.ObjectValue);
+                    var city2 = (City)(gene2.ObjectValue);
+                    var key = new Tuple<City, City>(city1, city2);
 
+                    if (popularities.ContainsKey(key))
+                    {
+                        popularities[key]++;
+                    }
+                    else {
+                        popularities.Add(key, 1);
+                    }
+
+                    gene1 = gene2;
+                }
             }
+
+            Graph graph = new Graph(map);
+            while(!graph.IsComplete)
+            {
+                Tuple<City, City> nextPair = GetNextMostPopular(popularities);
+                graph.TryAddEdge(nextPair.Item1, nextPair.Item2);
+            }
+
+            if (!graph.IsComplete)
+                throw new ApplicationException("I hope this doesn't happen... I'm sorry, it's after 1 am.");
+
+            var wocChromosome = graph.ToChromosome();
 
             wocChromosome.Evaluate(CalculateFitness);
             return wocChromosome;
+        }
+
+        private Tuple<City, City> GetNextMostPopular(Dictionary<Tuple<City, City>, int> popularities)
+        {
+            throw new NotImplementedException();
+
+            // Iterate through all entries looking for most popular
+            // Once found most popular, delete it from the dictionary and return it
         }
 
         /// <summary>
