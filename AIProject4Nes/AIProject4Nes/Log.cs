@@ -44,7 +44,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} in {1,5:#0.0}s : WoC {2,5:####} | Max {3,5:####} | Min {4,5:####} | Avg {5,5:####} | SDv {6,5:####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:####} in {1,5:#0.0}s : WoC {2,5:####} | Max {3,5:####} | Min {4,5:####} | Avg {5,5:####} | SDv {6,5:####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
@@ -78,8 +78,13 @@ namespace AIProject4Nes
                 stdDevFit = runningSum / (double)pop.PopulationSize;
                 stdDevFit = System.Math.Sqrt(stdDevFit);
                 
+                // This is really important because, turns out, GAF reuses chromosomes.
+                // I really should've known better in the first place.....
                 Chromosome mostFit = pop.GetTop(1)[0].DeepClone();
                 Chromosome leastFit = pop.GetBottom(1)[0].DeepClone();
+
+                // WoC doesn't need to be deep cloned b/c it's generated new in onGenerationFinished so we 
+                //    have the only reference to it here.
 
                 return new GenerationData(genNumIn, genTimeIn, avgFitness, stdDevFit, wocSolIn, mostFit, leastFit);
             }

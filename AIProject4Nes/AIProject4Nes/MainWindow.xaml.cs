@@ -27,6 +27,7 @@ namespace AIProject4Nes
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Program Constants
         /// <summary>
         /// The maximum amount two floating point values can be different and still be considered equal.
         /// Used for fitness comparisons in the Terminate function
@@ -34,16 +35,21 @@ namespace AIProject4Nes
         const double MAX_FLOAT_DIFF = 0.000000001;
         const double MAX_ROUTE_LENGTH = 10000;
         const double MIN_ROUTE_LENGTH = 0;
+        #endregion
 
         Random rand = new Random();
         Stopwatch stopwatch;
         BackgroundWorker b;
 
+        #region GA Parameters
         double crossoverProbability = 0.85;
         double mutationProbability = 0.08;
         int elitismPercentage = 5;
         int initialPopulationSize = 50;
         int maxGenerations = 1000;
+        int expertPercentage = 20;
+        #endregion
+
         Map map;
 
         Queue<double> plateauDetectorQueue;
@@ -55,6 +61,7 @@ namespace AIProject4Nes
             InitializeComponent();
         }
 
+        #region UI Helper Methods
         /// <summary>
         /// Reads an input file from a given path name
         /// Outs the contents of the file as a string
@@ -143,30 +150,13 @@ namespace AIProject4Nes
             // Return the graph we created
             return mapB.ToMap();
         }
+        #endregion
 
+        #region Background Worker Thread Methods
         private void ShowResultNavigator()
         {
             ResultNavigator rn = new ResultNavigator(log);
             rn.Show();
-        }
-
-        private void ga_OnGenerationComplete(object sender, GaEventArgs e)
-        {
-            // Add this generation's data to our log
-            log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, stopwatch.Elapsed.TotalSeconds, e.Population, e.Population.GetTop(2)[1]));
-
-            // Report the current state of execution back to the main UI thread
-            GenerationState gs = new GenerationState() { genNum = e.Generation, maxFit = e.Population.MaximumFitness };
-            b.ReportProgress(-1, gs);
-
-            // Maintain lastFiveGens queue
-            // Put this generations fitness onto the queue
-            plateauDetectorQueue.Enqueue(e.Population.MaximumFitness);
-            // Pull 6th last generation from queue, if it exists
-            if (plateauDetectorQueue.Count > plateauDetectorSize)
-            {
-                plateauDetectorQueue.Dequeue();
-            }
         }
 
         private void bw_ProgressChanged(object o, ProgressChangedEventArgs args)
@@ -188,7 +178,9 @@ namespace AIProject4Nes
 
             ShowResultNavigator();
         }
+        #endregion
 
+        #region UI Event Handlers
         private void fileInputBrowseButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -222,6 +214,15 @@ namespace AIProject4Nes
             initialPopulationSize = Convert.ToInt32(populationSizeSlider.Value);
             maxGenerations = Convert.ToInt32(maxGenerationsSlider.Value);
             plateauDetectorSize = Convert.ToInt32(plateauSizeSlider.Value);
+            expertPercentage = Convert.ToInt32(expertPercentageSlider.Value);
+
+            // Confirm that expert percentage is high enough to generate at least one expert
+            if ((expertPercentage / 100D) * initialPopulationSize < 1)
+            { // Won't be able to do WoC, abort the run and report why
+                statusLabel.Content = "Expert percentage too low!";
+                startButton.IsEnabled = true;
+                return;
+            }
 
             plateauDetectorQueue = new Queue<double>();
 
@@ -261,7 +262,9 @@ namespace AIProject4Nes
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerComplete);
             bw.RunWorkerAsync();
         }
+        #endregion
 
+        #region GA Methods
         private Population GenerateInitialPopulation(int initialPopulationSize)
         {
             var population = new Population();
@@ -283,6 +286,43 @@ namespace AIProject4Nes
             }
 
             return population;
+        }
+
+        private void ga_OnGenerationComplete(object sender, GaEventArgs e)
+        {
+            // Generate the WoC individual for this generation
+            var wocSolution = GenerateWoCSolution(e.Population);
+
+            // Add this generation's data to our log
+            log.Write(Log.GenerationData.GenDataFromPopulation(e.Generation, stopwatch.Elapsed.TotalSeconds, e.Population, wocSolution));
+
+            // Report the current state of execution back to the main UI thread
+            GenerationState gs = new GenerationState() { genNum = e.Generation, maxFit = e.Population.MaximumFitness };
+            b.ReportProgress(-1, gs);
+
+            // Maintain lastFiveGens queue
+            // Put this generations fitness onto the queue
+            plateauDetectorQueue.Enqueue(e.Population.MaximumFitness);
+            // Pull 6th last generation from queue, if it exists
+            if (plateauDetectorQueue.Count > plateauDetectorSize)
+            {
+                plateauDetectorQueue.Dequeue();
+            }
+        }
+
+        private Chromosome GenerateWoCSolution(Population population)
+        {
+            List<Chromosome> Experts = new List<Chromosome>(population.GetTopPercent(expertPercentage));
+
+            var wocChromosome = new Chromosome();
+
+            foreach(Chromosome expert in Experts)
+            {
+
+            }
+
+            wocChromosome.Evaluate(CalculateFitness);
+            return wocChromosome;
         }
 
         /// <summary>
@@ -349,6 +389,7 @@ namespace AIProject4Nes
             // Keep going
             return false;
         }
+        #endregion
 
         private class GenerationState
         {

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="ResultNavigator" Height="592.106" Width="1036.353">
+        Title="ResultNavigator" Height="694.106" Width="1448.853">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
