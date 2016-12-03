@@ -20,7 +20,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="genListBox" Margin="10,10,10,35" SelectionChanged="genListBox_SelectionChanged" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1"/>
+        <ListBox x:Name="genListBox" Margin="10,10,10,35" SelectionChanged="genListBox_SelectionChanged" Grid.Column="4" Grid.ColumnSpan="3" Grid.Row="1" FontFamily="Consolas"/>
         <TabControl x:Name="tabControl" Margin="10" Grid.ColumnSpan="4" Grid.Row="1">
             <TabItem x:Name="BestIndvTab" Header="Best Fit">
                 <Grid Background="#FFE5E5E5">

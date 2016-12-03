@@ -44,7 +44,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} | Time {1,5:###.#} : WoC {2,5:#####} | Max {3,5:#####} | Min {4,5:#####} | Avg {5,5:#####} | SDv {6,5:#####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} Time {1,5:##0.0} : WoC {2,5:#####} | Max {3,5:#####} | Min {4,5:#####} | Avg {5,5:#####} | SDv {6,5:#####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
@@ -78,8 +78,8 @@ namespace AIProject4Nes
                 stdDevFit = runningSum / (double)pop.PopulationSize;
                 stdDevFit = System.Math.Sqrt(stdDevFit);
                 
-                Chromosome mostFit = pop.GetTop(1)[0];
-                Chromosome leastFit = pop.GetBottom(1)[0];
+                Chromosome mostFit = pop.GetTop(1)[0].DeepClone();
+                Chromosome leastFit = pop.GetBottom(1)[0].DeepClone();
 
                 return new GenerationData(genNumIn, genTimeIn, avgFitness, stdDevFit, wocSolIn, mostFit, leastFit);
             }
