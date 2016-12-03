@@ -51,6 +51,12 @@ namespace AIProject4Nes
             var maxSeries = new LineSeries();
             var minSeries = new LineSeries();
             var avgSeries = new LineSeries();
+            var wocSeries = new LineSeries();
+
+            maxSeries.Title = "Max";
+            minSeries.Title = "Min";
+            avgSeries.Title = "Avg";
+            wocSeries.Title = "WoC";
 
             for (int i = 0; i < log.Length; i++)
             {
@@ -58,13 +64,19 @@ namespace AIProject4Nes
                 maxSeries.Points.Add(new DataPoint(genData.GenNum, genData.MaxFitness));
                 minSeries.Points.Add(new DataPoint(genData.GenNum, genData.MinFitness));
                 avgSeries.Points.Add(new DataPoint(genData.GenNum, genData.AvgFitness));
+                wocSeries.Points.Add(new DataPoint(genData.GenNum, genData.WoCFitness));
             }
 
             MyModel = new PlotModel();
+
+            MyModel.LegendPlacement = LegendPlacement.Outside;
+            MyModel.LegendPosition = LegendPosition.TopRight;
+            MyModel.LegendOrientation = LegendOrientation.Horizontal;
             
             MyModel.Series.Add(maxSeries);
             MyModel.Series.Add(minSeries);
             MyModel.Series.Add(avgSeries);
+            MyModel.Series.Add(wocSeries);
         }
 
         private void genListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -94,11 +106,25 @@ namespace AIProject4Nes
                 LeastFitImage.Source = null;
 
                 // Generate the images
+                Bitmap wocImg = Graph.GenerateGraphImage(log.OriginalMap, selectedGen.WoCSolution);
                 Bitmap bstImg = Graph.GenerateGraphImage(log.OriginalMap, selectedGen.MostFitSolution);
                 Bitmap lstImg = Graph.GenerateGraphImage(log.OriginalMap, selectedGen.LeastFitSolution);
 
-                // Place the best fit image
+                // Place the woc image
                 BitmapImage bitmapImage = new BitmapImage();
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    wocImg.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                    memory.Position = 0;
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = memory;
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                }
+                WoCSolImage.Source = bitmapImage;
+
+                // Place the best fit image
+                bitmapImage = new BitmapImage();
                 using (MemoryStream memory = new MemoryStream())
                 {
                     bstImg.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
