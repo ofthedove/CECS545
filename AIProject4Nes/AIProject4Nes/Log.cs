@@ -44,7 +44,7 @@ namespace AIProject4Nes
             {
                 get
                 {
-                    return string.Format("Gen {0,3:###} Time {1,5:##0.0} : WoC {2,5:#####} | Max {3,5:#####} | Min {4,5:#####} | Avg {5,5:#####} | SDv {6,5:#####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
+                    return string.Format("Gen {0,3:###} in {1,5:#0.0}s : WoC {2,5:####} | Max {3,5:####} | Min {4,5:####} | Avg {5,5:####} | SDv {6,5:####}", genNum, genTime, WoCFitness, MaxFitness, MinFitness, avgFitness, stdDevFit);
                 }
             }
 
