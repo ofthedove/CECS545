@@ -12,13 +12,19 @@ namespace AIProject4Nes
     {
         private Map map;
 
+        private List<City> unused;
+        private List<City> usedOnce;
+        private List<City> usedTwice;
+
+        private List<Edge> edges;
+
+        private bool isComplete = false;
+
         public bool IsComplete
         {
             get
             {
-                throw new NotImplementedException();
-                // returns true if the current graph has a path that goes through all cities exactly once.
-                // Probably want an internal class variable for this and set that when adding or removing edges
+                return isComplete;
             }
         }
 
@@ -26,6 +32,11 @@ namespace AIProject4Nes
         {
             this.map = map;
 
+            unused = map.GetListOfCities();
+            usedOnce = new List<City>();
+            usedTwice = new List<City>();
+
+            edges = new List<Edge>();
             // need to add edge list and crap too (probably want used and unused cities
         }
 
@@ -33,6 +44,10 @@ namespace AIProject4Nes
         {
             // Attempt to add an edge. Don't create sub-cycles or visit a city twice
             throw new NotImplementedException();
+
+            // Eventually create and add the edge
+            edges.Add(new Edge { city1 = item1, city2 = item2 });
+            SetIsComplete();
         }
 
         internal Chromosome ToChromosome()
@@ -121,6 +136,40 @@ namespace AIProject4Nes
                 city1 = city2;
                 city2 = (City)solution.Genes[i++ % solution.Count].ObjectValue;
             }
+        }
+
+        private void SetIsComplete()
+        {
+            if(unused.Count != 0 || usedOnce.Count != 0)
+            {
+                isComplete = false;
+                return;
+            }
+
+            City firstCity = edges[0].city1;
+            City nextCity = edges[0].city2;
+            Edge curEdge;
+            while (true)
+            {
+                foreach(Edge edge in edges)
+                {
+                    if(edge.city1 == nextCity)
+                    {
+                        curEdge = edge;
+                        break;
+                    }
+                }
+            }
+            // returns true if the current graph has a path that goes through all cities exactly once.
+            // Probably want an internal class variable for this and set that when adding or removing edges
+            throw new NotImplementedException();
+            // set the is complete variable whenever the graph is changed
+        }
+
+        private class Edge
+        {
+            public City city1 { get; set; }
+            public City city2 { get; set; }
         }
     }
 }
