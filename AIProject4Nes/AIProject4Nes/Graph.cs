@@ -45,6 +45,22 @@ namespace AIProject4Nes
             // Attempt to add an edge. Don't create sub-cycles or visit a city twice
             throw new NotImplementedException();
 
+            // Check to see if we can use the first city
+            if (usedTwice.Contains(item1))
+            {
+                return; // Fails b/c city 1 is already used
+            }
+
+            if (usedTwice.Contains(item2))
+            {
+                return; // Fails b/c city 2 is already used
+            }
+
+            // Create the edge and check if it makes a cycle
+            Edge edge = new Edge { city1 = item1, city2 = item2 };
+
+            var checkedCities = new List<City>();
+
             // Eventually create and add the edge
             edges.Add(new Edge { city1 = item1, city2 = item2 });
             SetIsComplete();
@@ -146,6 +162,9 @@ namespace AIProject4Nes
                 return;
             }
 
+            isComplete = true;
+            return;
+            /* Shouldn't actually need this. As long as all the cities are used we should be fine
             City firstCity = edges[0].city1;
             City nextCity = edges[0].city2;
             Edge curEdge;
@@ -159,10 +178,10 @@ namespace AIProject4Nes
                         break;
                     }
                 }
-            }
+            }*/
             // returns true if the current graph has a path that goes through all cities exactly once.
             // Probably want an internal class variable for this and set that when adding or removing edges
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
             // set the is complete variable whenever the graph is changed
         }
 
