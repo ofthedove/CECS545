@@ -315,8 +315,18 @@ namespace AIProject4Nes
             List<Chromosome> Experts = new List<Chromosome>(population.GetTopPercent(expertPercentage));
 
             var popularities = new Dictionary<Tuple<City, City>, int>();
+            for(int i = 1; i <= map.GetListOfCities().Count; i++)
+            {
+                for (int j = 1; j <= map.GetListOfCities().Count; j++)
+                {
+                    if (!(j == i))
+                        popularities.Add(new Tuple<City, City>(map.GetCityByID(i), map.GetCityByID(j)), 0);
+                }
+            }
 
-            foreach(Chromosome expert in Experts)
+            var popularities2 = new Dictionary<Tuple<City, City>, int>();
+
+            foreach (Chromosome expert in Experts)
             {
                 Gene gene1 = expert.Genes[0];
                 Gene gene2;
@@ -343,7 +353,7 @@ namespace AIProject4Nes
             Graph graph = new Graph(map);
             while(!graph.IsComplete)
             {
-                Tuple<City, City> nextPair = GetNextMostPopular(popularities);
+                Tuple<City, City> nextPair = GetNextMostPopular(ref popularities, ref popularities2);
                 graph.TryAddEdge(nextPair.Item1, nextPair.Item2);
             }
 
@@ -351,24 +361,44 @@ namespace AIProject4Nes
                 throw new ApplicationException("I hope this doesn't happen... I'm sorry, it's after 1 am.");
 
             var wocChromosome = graph.ToChromosome();
-
+            // Doesn't calculate chromosomes fitness, must do it here.
             wocChromosome.Evaluate(CalculateFitness);
             return wocChromosome;
         }
 
-        private Tuple<City, City> GetNextMostPopular(Dictionary<Tuple<City, City>, int> popularities)
+        // Iterate through all entries looking for most popular
+        // Once found most popular, delete it from the dictionary and return it
+        private Tuple<City, City> GetNextMostPopular(ref Dictionary<Tuple<City, City>, int> popularities, ref Dictionary<Tuple<City, City>, int> popularities2)
         {
-            throw new NotImplementedException();
+            if (popularities.Count == 0) { var temp = popularities; popularities = popularities2; popularities2 = temp; }
 
-            // Iterate through all entries looking for most popular
-            // Once found most popular, delete it from the dictionary and return it
+            KeyValuePair<Tuple<City, City>, int> currentMostPopular = popularities.ElementAt(0);
+
+            foreach (KeyValuePair<Tuple<City, City>, int> entry in popularities)
+            {
+                if (entry.Value > currentMostPopular.Value)
+                { // If the current entr is most popular, make it current most popular
+                    currentMostPopular = entry;
+                }
+                else if (entry.Value.CompareTo(currentMostPopular.Value) == 0)
+                { // If they're tied, choose randomly whether to replace it.
+                    // This is not the same as randomly choosing one! If 5 are equal the last one checked
+                    //    has a much higher chance of beign chosen than the first. This shouldn't cause problems
+                    if(rand.NextDouble() > 0.5) { currentMostPopular = entry; }
+                }
+            }
+
+            popularities.Remove(currentMostPopular.Key);
+            popularities2.Add(currentMostPopular.Key, currentMostPopular.Value);
+
+            return currentMostPopular.Key;
         }
 
         /// <summary>
         /// Fitness Function
         /// </summary>
         /// <returns>Between 0 and 1 with 1 being being most fit</returns>
-        private double CalculateFitness(Chromosome chromosome)
+        internal double CalculateFitness(Chromosome chromosome)
         {
             double fitnessValue = -1, pathLength = -1;
             if (chromosome != null)

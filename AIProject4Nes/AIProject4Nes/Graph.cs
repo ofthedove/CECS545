@@ -12,64 +12,139 @@ namespace AIProject4Nes
     {
         private Map map;
 
-        private List<City> unused;
-        private List<City> usedOnce;
-        private List<City> usedTwice;
+        private List<City> hasBeenFirst;
+        private List<City> hasNotBeenFirst;
+        private List<City> hasBeenSecond;
+        private List<City> hasNotBeenSecond;
 
         private List<Edge> edges;
 
         private bool isComplete = false;
 
-        public bool IsComplete
-        {
-            get
-            {
-                return isComplete;
-            }
-        }
+        public bool IsComplete { get { return isComplete; } }
 
         public Graph(Map map)
         {
             this.map = map;
 
-            unused = map.GetListOfCities();
-            usedOnce = new List<City>();
-            usedTwice = new List<City>();
+            hasBeenFirst = new List<City>();
+            hasNotBeenFirst = new List<City>(map.GetListOfCities());
+            hasBeenSecond = new List<City>();
+            hasNotBeenSecond = new List<City>(map.GetListOfCities());
 
             edges = new List<Edge>();
-            // need to add edge list and crap too (probably want used and unused cities
         }
 
-        internal void TryAddEdge(City item1, City item2)
+        // Attempt to add an edge. Don't create sub-cycles or visit a city twice
+        internal bool TryAddEdge(City item1, City item2)
         {
-            // Attempt to add an edge. Don't create sub-cycles or visit a city twice
-            throw new NotImplementedException();
-
             // Check to see if we can use the first city
-            if (usedTwice.Contains(item1))
+            if (hasBeenFirst.Contains(item1))
             {
-                return; // Fails b/c city 1 is already used
+                return false; // Fails b/c city 1 is already used
             }
 
-            if (usedTwice.Contains(item2))
+            if (hasBeenSecond.Contains(item2))
             {
-                return; // Fails b/c city 2 is already used
+                return false; // Fails b/c city 2 is already used
             }
 
             // Create the edge and check if it makes a cycle
             Edge edge = new Edge { city1 = item1, city2 = item2 };
 
-            var checkedCities = new List<City>();
+            // check for cycle, but only if at least one city exists
+            if (edges.Count > 0)
+            {
+                var checkedCities = new List<City>();
 
-            // Eventually create and add the edge
-            edges.Add(new Edge { city1 = item1, city2 = item2 });
-            SetIsComplete();
+                City firstCity = edges[0].city1;
+                City nextCity = edges[0].city2;
+                checkedCities.Add(firstCity);
+                Edge curEdge = null;
+                while (true)
+                {
+                    foreach (Edge edge_i in edges)
+                    {
+                        if (edge_i.city1 == nextCity)
+                        {
+                            curEdge = edge_i;
+                            break;
+                        }
+                    }
+
+                    // If we didn't find the edge, this graph doesn't form any cycle, we're good
+                    if (curEdge == null) { break; }
+
+                    if (checkedCities.Contains(nextCity)) { return false; }// throw new ArgumentException("'used' lists out of sync!"); } // Something with the used lists failed big time
+                    checkedCities.Add(nextCity);
+
+                    nextCity = curEdge.city2;
+
+                    if (nextCity.CompareTo(firstCity) == 0) // This is only okay if the graph is complete. If the graph were complete we would have failed the 'usedTwice' checks above.
+                    { // Therefore, this mean's there's a cycle. Don't add this edge
+                        return false;
+                    }
+
+                    curEdge = null;
+                }
+            }
+
+            // No cycle, add the edge
+            edges.Add(edge);
+
+            Console.WriteLine("Add edge from {0} to {1}", edge.city1.ID, edge.city2.ID);
+
+            // Update the 'hasBeen' lists
+            hasNotBeenFirst.Remove(item1);
+            hasBeenFirst.Add(item1);
+
+            hasNotBeenSecond.Remove(item2);
+            hasBeenSecond.Add(item2);
+
+            SetIsComplete(); // Check to see if the graph is now complete
+
+            return true;
         }
 
+        // turn the internal list of edges into a list of genes into a chromosome
         internal Chromosome ToChromosome()
         {
-            // turn the internal list of edges into a list of genes into a chromosome
-            throw new NotImplementedException();
+            var retVal = new Chromosome();
+
+            // Can't run if it's not a complete graph
+            if(!IsComplete) { return null; }
+
+            City firstCity = edges[0].city1;
+            City nextCity = edges[0].city2;
+            Edge curEdge = null;
+            retVal.Genes.Add(new Gene(firstCity));
+            while (true)
+            {
+                foreach (Edge edge in edges)
+                {
+                    if (edge.city1 == nextCity)
+                    {
+                        curEdge = edge;
+                        break;
+                    }
+                }
+
+                // If we didn't find the edge, this graph isn't complete, which means there are big problems somewhere
+                if (curEdge == null) { throw new ApplicationException("Big problem!");  }
+
+                retVal.Genes.Add(new Gene(nextCity));
+
+                nextCity = curEdge.city2;
+
+                if (nextCity.CompareTo(firstCity) == 0)
+                {
+                    break;
+                }
+
+                curEdge = null;
+            }
+
+            return retVal;
         }
 
         public static double CalculateRouteLength(Map map, Chromosome solution)
@@ -154,35 +229,29 @@ namespace AIProject4Nes
             }
         }
 
+        // set the is complete variable whenever the graph is changed
+        // sets true if the current graph has a path that goes through all cities exactly once.
         private void SetIsComplete()
         {
-            if(unused.Count != 0 || usedOnce.Count != 0)
+            if(hasNotBeenFirst.Count == 0 && hasNotBeenSecond.Count == 0)
             {
-                isComplete = false;
+                Console.WriteLine("IsComplete! hasNotBeenFirst: {0} hasNotBeenSecond: {1}", MyListToString(hasNotBeenFirst), MyListToString(hasNotBeenSecond));
+                isComplete = true;
                 return;
             }
 
-            isComplete = true;
+            isComplete = false;
             return;
-            /* Shouldn't actually need this. As long as all the cities are used we should be fine
-            City firstCity = edges[0].city1;
-            City nextCity = edges[0].city2;
-            Edge curEdge;
-            while (true)
+        }
+
+        private string MyListToString(List<City> list)
+        {
+            string str = "";
+            foreach(City city in list)
             {
-                foreach(Edge edge in edges)
-                {
-                    if(edge.city1 == nextCity)
-                    {
-                        curEdge = edge;
-                        break;
-                    }
-                }
-            }*/
-            // returns true if the current graph has a path that goes through all cities exactly once.
-            // Probably want an internal class variable for this and set that when adding or removing edges
-            //throw new NotImplementedException();
-            // set the is complete variable whenever the graph is changed
+                str += city.ID + ", ";
+            }
+            return str;
         }
 
         private class Edge
